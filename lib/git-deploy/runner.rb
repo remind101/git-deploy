@@ -43,6 +43,8 @@ end
 # TODO make this look at a `.gitdeploy` file?
 Git::Deploy::Runner.instance_eval <<-RUBY
   require 'git-deploy/plugins/status'
+  require 'git-deploy/plugins/hipchat_status'
 
   use Git::Deploy::Plugins::Status
+  use Git::Deploy::Plugins::HipChatStatus
 RUBY
