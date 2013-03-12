@@ -13,6 +13,11 @@ module Git
   module Deploy
     class CLI < Thor
 
+      desc 'plugins', 'Prints all available plugins'
+
+      def plugins
+        puts Git::Deploy.plugins.map( &:basename )
+      end
 
       Git::Deploy.remotes.each do |remote|
 
