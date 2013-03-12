@@ -19,4 +19,6 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'thor', '0.17.0'
   gem.add_dependency 'activesupport', '3.2.11'
+
+  gem.add_development_dependency 'pry'
 end

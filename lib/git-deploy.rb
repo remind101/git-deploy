@@ -13,6 +13,9 @@ module Git
     autoload :Plugin, 'git-deploy/plugin'
     autoload :Runner, 'git-deploy/runner'
 
+    ##
+    # Namespace for deploy plugins. Define which plugins you want
+    # to use in `.gitdeploy`.
     module Plugins
     end
 
@@ -35,9 +38,6 @@ module Git
       ##
       # Runs the deploy plugins around a push to the specified remote.
       def deploy( remote, refspec )
-        # TODO move this
-        require 'git-deploy/plugins/status'
-        runner << Git::Deploy::Plugins::Status
         runner.deploy remote, refspec
       end
 

@@ -1,14 +1,14 @@
 class Git::Deploy::Plugins::Status < Git::Deploy::Plugin
 
   before do
-    say 'Deploying %s to %s' % [ env.ref, env.remote ]
+    puts 'Deploying %s to %s' % [ '[REF]', '[REMOTE]' ]
   end
 
   after do
-    say 'Deployed successfully!'
+    puts 'Deployed successfully!'
   end
 
   trap 'TERM' do
-    say 'Deploy terminated.'
+    puts 'Deploy terminated.'
   end
 end
