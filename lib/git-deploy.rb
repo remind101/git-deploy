@@ -9,9 +9,10 @@ module Git
   end
 
   module Deploy
-    autoload :CLI,    'git-deploy/cli'
-    autoload :Plugin, 'git-deploy/plugin'
-    autoload :Runner, 'git-deploy/runner'
+    autoload :CLI,           'git-deploy/cli'
+    autoload :LogSubscriber, 'git-deploy/log_subscriber'
+    autoload :Plugin,        'git-deploy/plugin'
+    autoload :Runner,        'git-deploy/runner'
 
     ##
     # Namespace for deploy plugins. Define which plugins you want
@@ -47,6 +48,5 @@ module Git
         @runner ||= Runner.new
       end
     end
-
   end
 end

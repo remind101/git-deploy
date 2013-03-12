@@ -1,4 +1,5 @@
 require 'active_support/callbacks'
+require 'active_support/notifications'
 
 module Git
   module Deploy
@@ -27,6 +28,17 @@ module Git
           set_callback :deploy, :around, &block
         end
       end
+
+      ##
+      # Instrument all plugin callbacks.
+      around do |&block|
+        ActiveSupport::Notifications.instrument \
+          'plugin.deploy', { :plugin => self.class.to_s }, &block
+      end
+
+      ##
+      # Subscribe to plugin notifications
+      Git::Deploy::LogSubscriber.attach_to 'deploy'
     end
   end
 end

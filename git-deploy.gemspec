@@ -18,6 +18,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
 
   gem.add_dependency 'thor', '0.17.0'
+  gem.add_dependency 'yell', '1.3.0'
   gem.add_dependency 'activesupport', '3.2.11'
 
   gem.add_development_dependency 'pry'

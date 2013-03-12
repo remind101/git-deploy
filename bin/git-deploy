@@ -1,9 +1,6 @@
-#!/usr/bin/env ruby -wKU
+#!/usr/bin/env ruby -KU
 
 require 'git-deploy'
-
-# Silence hella annoying 1.9.3 warnings
-$VERBOSE = ENV[ 'VERBOSE' ] || false
 
 # _____________________________________________________________________
 
