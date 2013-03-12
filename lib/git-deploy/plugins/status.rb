@@ -1,7 +1,7 @@
 class Git::Deploy::Plugins::Status < Git::Deploy::Plugin
 
   before do
-    puts 'Deploying %s to %s' % [ '[REF]', '[REMOTE]' ]
+    puts 'Deploying %s to %s' % [ env.branch, env.remote ]
   end
 
   after do

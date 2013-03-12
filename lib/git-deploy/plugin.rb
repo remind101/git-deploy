@@ -3,7 +3,7 @@ require 'active_support/notifications'
 
 module Git
   module Deploy
-    class Plugin
+    class Plugin < Struct.new( :env )
       include ActiveSupport::Callbacks
 
       define_callbacks :deploy

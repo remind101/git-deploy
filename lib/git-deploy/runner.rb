@@ -11,16 +11,29 @@ module Git
       # Adds a plugin to the plugin stack.
       def self.use( plugin )
         set_callback :deploy, :around do |&block|
-          plugin.new.run_callbacks :deploy, &block
+          plugin.new( env ).run_callbacks :deploy, &block
         end
       end
 
       ##
+      #
+      def initialize( remote, refspec )
+        @remote, @refspec = remote, refspec
+      end
+      attr_reader :remote, :refspec
+
+      ##
       # Runs the deploy plugins around a push to the specified remote.
-      def deploy( remote, refspec )
+      def run!
         run_callbacks :deploy do
           Git[ 'push', remote, refspec, '--dry-run' ]
         end
+      end
+
+      ##
+      # The current git repo env.
+      def env
+        @env ||= Env.new remote, refspec
       end
     end
   end

@@ -5,11 +5,12 @@ module Git
   ##
   # Executes the given git command.
   def self.[]( *args )
-    `git #{ args.join ' ' }`
+    `git #{ args.join ' ' }`.chomp
   end
 
   module Deploy
     autoload :CLI,           'git-deploy/cli'
+    autoload :Env,           'git-deploy/env'
     autoload :LogSubscriber, 'git-deploy/log_subscriber'
     autoload :Plugin,        'git-deploy/plugin'
     autoload :Runner,        'git-deploy/runner'
@@ -39,13 +40,7 @@ module Git
       ##
       # Runs the deploy plugins around a push to the specified remote.
       def deploy( remote, refspec )
-        runner.deploy remote, refspec
-      end
-
-      ##
-      #
-      def runner
-        @runner ||= Runner.new
+        Runner.new( remote, refspec ).run!
       end
     end
   end
