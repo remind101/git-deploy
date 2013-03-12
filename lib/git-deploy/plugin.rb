@@ -6,7 +6,7 @@ module Git
     class Plugin < Struct.new( :env )
       include ActiveSupport::Callbacks
 
-      define_callbacks :deploy
+      define_callbacks :deploy, :interrupt
 
       class << self
 
@@ -26,6 +26,12 @@ module Git
         # Sugar syntax for setting an around deploy callback.
         def around( &block )
           set_callback :deploy, :around, &block
+        end
+
+        ##
+        # Sugar syntax for setting a before interrupt callback.
+        def interrupt( &block )
+          set_callback :interrupt, &block
         end
       end
 

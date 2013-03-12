@@ -14,12 +14,8 @@ module Git
         @tag ||= Time.now.strftime '%F.%I%M%p'
       end
 
-      def user_name
-        @user_name ||= Git[ 'config', '--global', 'user.name' ]
-      end
-
-      def user_email
-        @user_email ||= Git[ 'config', '--global', 'user.email' ]
+      def user
+        @user ||= Git[ 'config', '--global', 'user.email' ]
       end
 
 

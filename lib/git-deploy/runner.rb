@@ -5,14 +5,23 @@ module Git
     class Runner
       include ActiveSupport::Callbacks
 
-      define_callbacks :deploy
+      define_callbacks :deploy, :interrupt
 
       ##
       # Adds a plugin to the plugin stack.
-      def self.use( plugin )
+      def self.use( plugin_class )
         set_callback :deploy, :around do |&block|
-          plugin.new( env ).run_callbacks :deploy, &block
+          plugins[ plugin_class ].run_callbacks :deploy, &block
         end
+        set_callback :interrupt, :around do |&block|
+          plugins[ plugin_class ].run_callbacks :interrupt, &block
+        end
+      end
+
+      ##
+      #
+      def plugins
+        @plugins ||= Hash.new { |h, k| h[ k ] = k.new( env ) }
       end
 
       ##
@@ -25,8 +34,18 @@ module Git
       ##
       # Runs the deploy plugins around a push to the specified remote.
       def run!
+        trap 'INT' do |signo|
+          run_callbacks :interrupt do
+            puts 'Exiting...'
+            exit 1
+          end
+        end
+
         run_callbacks :deploy do
-          Git[ 'push', remote, refspec, '--dry-run' ]
+          puts 'SLEEPING'
+          sleep 10
+          puts 'AWAKE AGAIN'
+          # Git[ 'push', remote, refspec, '--dry-run' ]
         end
       end
 

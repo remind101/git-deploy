@@ -42,6 +42,7 @@ module Git
       def deploy( remote, refspec )
         Runner.new( remote, refspec ).run!
       end
+
     end
   end
 end

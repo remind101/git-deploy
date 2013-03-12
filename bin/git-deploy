@@ -2,6 +2,10 @@
 
 require 'git-deploy'
 
+# Load the current ENV
+require 'dotenv'
+Dotenv.load
+
 # _____________________________________________________________________
 
 require 'thor'

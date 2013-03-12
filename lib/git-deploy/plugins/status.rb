@@ -8,8 +8,7 @@ class Git::Deploy::Plugins::Status < Git::Deploy::Plugin
     puts 'Deployed successfully!'
   end
 
-  # trap 'INT' do
-  #   puts 'Deploy interrupted.'
-  #   exit 1
-  # end
+  interrupt do
+    puts 'Deploy interrupted.'
+  end
 end
