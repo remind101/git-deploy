@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby -wKU
+
+require 'git-deploy'
+
+# Silence hella annoying 1.9.3 warnings
+$VERBOSE = ENV[ 'VERBOSE' ] || false
+
+# _____________________________________________________________________
+
+require 'thor'
+
+module Git
+  module Deploy
+    class CLI < Thor
+
+
+      Git::Deploy.remotes.each do |remote|
+
+        class_eval <<-RUBY
+
+        desc '#{remote} [<refspec>]', 'Deploy <refspec> to #{remote}'
+
+        def #{remote}( refspec='HEAD' )
+          Git::Deploy.deploy '#{remote}', refspec
+        end
+        RUBY
+      end
+
+    end
+  end
+end
+
+# _____________________________________________________________________
+
+
+# Start the CLI
+Git::Deploy::CLI.start
