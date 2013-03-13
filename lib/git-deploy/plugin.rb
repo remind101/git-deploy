@@ -37,9 +37,9 @@ module Git
       end
 
       ##
-      # Shortcut to the i18n api.
-      def t( *args )
-        I18n.translate *args
+      # Shortcut to the i18n api, always using `env` as the interpolation hash.
+      def t( key )
+        I18n.translate key, env.to_hash
       end
 
       ##

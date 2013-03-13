@@ -17,6 +17,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ['lib']
 
+  gem.add_dependency 'hashie',        '1.2.0'
   gem.add_dependency 'i18n',          '0.6.4'
   gem.add_dependency 'thor',          '0.17.0'
   gem.add_dependency 'yell',          '1.3.0'

@@ -14,8 +14,10 @@ class Git::Deploy::Plugins::HipChatStatus < Git::Deploy::Plugin
     hipchat 'deploy.interrupted', :notify => true, :color => 'red'
   end
 
+  ##
+  # Send a message to the developers hipchat room.
   def hipchat( msg, options={} )
-    client[ 'Developers' ].send 'Deploy', t( msg, env.to_hash ), options
+    client[ 'Developers' ].send 'Deploy', t( msg ), options
   end
 
   # TODO look at other message formatting options, like HTML

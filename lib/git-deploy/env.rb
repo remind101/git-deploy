@@ -1,31 +1,32 @@
+require 'hashie/dash'
+
 module Git
   module Deploy
-    class Env < Struct.new( :remote, :refspec )
+    class Env < Hashie::Dash
+      property :remote,  :required => true
+      property :refspec, :required => true
+      property :ref
+      property :branch
+      property :tag
+      property :user
 
-      def ref
-        @ref ||= Git[ 'symbolic-ref', refspec ]
+      ##
+      # Initializes this env. Expects the keys `remote` and `refspec` to
+      # be provided.
+      def initialize(*)
+        super
+
+        self[ :ref    ] = Git[ 'symbolic-ref', refspec ]
+        self[ :branch ] = File.basename( ref )
+        self[ :tag    ] = I18n.l Time.now, :format => :tag
+        self[ :user   ] = Git[ 'config', '--global', 'user.email' ]
       end
 
-      def branch
-        @branch ||= File.basename ref
-      end
-
-      def tag
-        # TODO use I18n for this format
-        @tag ||= Time.now.strftime '%F.%I%M%p'
-      end
-
-      def user
-        @user ||= Git[ 'config', '--global', 'user.email' ]
-      end
-
+      ##
+      # Converts self to a vanilla hash suitable for passing to the i18n api.
       def to_hash
-        %w| remote refspec ref branch tag user |.reduce( { } ) do |hsh, key|
-          hsh[ key.to_sym ] = send( key )
-          hsh
-        end
+        super :symbolize_keys => true
       end
-
 
       # export ref=$(git symbolic-ref HEAD)
       # export branch=$(basename $ref)

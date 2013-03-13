@@ -50,7 +50,7 @@ module Git
       ##
       # The current git repo env.
       def env
-        @env ||= Env.new remote, refspec
+        @env ||= Env.new :remote => remote, :refspec => refspec
       end
     end
   end
