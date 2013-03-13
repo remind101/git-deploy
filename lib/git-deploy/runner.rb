@@ -33,10 +33,11 @@ module Git
         trap( 'INT' ){ run_callbacks( :interrupt ){ exit 1 } }
 
         run_callbacks :deploy do
-          puts 'SLEEPING'
-          sleep 10
-          puts 'AWAKE AGAIN'
-          # Git[ 'push', remote, refspec, '--dry-run' ]
+          # TODO we obviously don't want to push to master if this is
+          # not a heroku app. Fix this to be more generic in the future?
+          # Or maybe make this more like a middleware chain
+          # and create a heroku middleware that always pushes to master?
+          Git[ 'push', remote, "#{refspec}:master", '--dry-run' ]
         end
       end
 

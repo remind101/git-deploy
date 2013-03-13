@@ -26,8 +26,11 @@ module Git
 
       ##
       # Returns an array of all git remotes for this repository.
+      # For now, remotes are assumed to be heroku apps.
       def remotes
-        Git[ 'remote' ].lines.map( &:chomp )
+        Git[ 'remote' ].lines.map( &:chomp ).select do |remote|
+          Git[ 'config', "remote.#{remote}.url" ] =~ /^git@heroku\.com:/
+        end
       end
 
       ##

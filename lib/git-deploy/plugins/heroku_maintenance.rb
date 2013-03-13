@@ -4,17 +4,17 @@ class Git::Deploy::Plugins::HerokuMaintenance < Git::Deploy::Plugin
 
   before :if => :heroku_app? do
     client.post_app_maintenance env.app, '1'
-    say t( 'maintenance.on' ), :yellow
+    say t( 'maintenance.enabled' ), :yellow
   end
 
   after :if => :heroku_app? do
     client.post_app_maintenance env.app, '0'
-    say t( 'maintenance.off' ), :green
+    say t( 'maintenance.disabled' ), :green
   end
 
   interrupt :if => :heroku_app? do
     client.post_app_maintenance env.app, '0'
-    say t( 'maintenance.off' ), :green
+    say t( 'maintenance.disabled' ), :green
   end
 
   ##
