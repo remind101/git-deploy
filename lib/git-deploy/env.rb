@@ -10,6 +10,8 @@ module Git
       property :tag
       property :user
       property :sha
+      property :url
+      property :app
 
       ##
       # Initializes this env. Expects the keys `remote` and `refspec` to
@@ -22,6 +24,8 @@ module Git
         self[ :tag    ] = I18n.l Time.now, :format => :tag
         self[ :user   ] = Git[ 'config', '--global', 'user.email' ]
         self[ :sha    ] = Git[ 'rev-parse', '--short', refspec ]
+        self[ :url    ] = Git[ 'config', "remote.#{remote}.url" ]
+        self[ :app    ] = url[ /^git@heroku\.com:(.+)\.git$/, 1 ]
       end
 
       ##
@@ -29,6 +33,7 @@ module Git
       def to_hash
         super :symbolize_keys => true
       end
+
     end
   end
 end

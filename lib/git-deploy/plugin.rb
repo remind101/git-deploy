@@ -13,26 +13,26 @@ module Git
 
         ##
         # Sugar syntax for setting a before deploy callback.
-        def before( &block )
-          set_callback :deploy, :before, &block
+        def before( *args, &block )
+          set_callback :deploy, :before, *args, &block
         end
 
         ##
         # Sugar syntax for setting an after deploy callback.
-        def after( &block )
-          set_callback :deploy, :after, &block
+        def after( *args, &block )
+          set_callback :deploy, :after, *args, &block
         end
 
         ##
         # Sugar syntax for setting an around deploy callback.
-        def around( &block )
-          set_callback :deploy, :around, &block
+        def around( *args, &block )
+          set_callback :deploy, :around, *args, &block
         end
 
         ##
         # Sugar syntax for setting a before interrupt callback.
-        def interrupt( &block )
-          set_callback :interrupt, &block
+        def interrupt( *args, &block )
+          set_callback :interrupt, *args, &block
         end
       end
 

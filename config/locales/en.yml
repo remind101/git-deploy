@@ -9,4 +9,6 @@ en:
     finished: '%{user} finished deployment of %{branch} (%{sha}) to %{remote}'
     interrupted: '%{user} interrupted deployment of %{branch} (%{sha}) to %{remote}'
 
-
+    maintenance:
+      on: 'Maintenance mode enabled for %{app}'
+      off: 'Maintenance mode disabled for %{app}'

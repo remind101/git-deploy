@@ -68,7 +68,10 @@ end
 Git::Deploy::Runner.instance_eval <<-RUBY
   require 'git-deploy/plugins/status'
   require 'git-deploy/plugins/hipchat_status'
+  require 'git-deploy/plugins/heroku_maintenance'
+
 
   use Git::Deploy::Plugins::Status
   # use Git::Deploy::Plugins::HipChatStatus
+  use Git::Deploy::Plugins::HerokuMaintenance
 RUBY
