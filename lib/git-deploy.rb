@@ -12,6 +12,7 @@ module Git
     autoload :CLI,           'git-deploy/cli'
     autoload :Env,           'git-deploy/env'
     autoload :LogSubscriber, 'git-deploy/log_subscriber'
+    autoload :Paths,         'git-deploy/paths'
     autoload :Plugin,        'git-deploy/plugin'
     autoload :Runner,        'git-deploy/runner'
 
@@ -32,9 +33,13 @@ module Git
       ##
       # Returns an array of the available plugin files.
       def plugins
-        require 'pathname'
+        paths.plugins
+      end
 
-        Pathname.new( __FILE__ ).join( '../git-deploy/plugins' ).children
+      ##
+      # The paths associated with this bundle.
+      def paths
+        @paths ||= Paths.new __FILE__
       end
 
       ##
@@ -44,5 +49,10 @@ module Git
       end
 
     end
+
+    ##
+    # Set up i18n
+    require 'i18n'
+    I18n.load_path.concat Git::Deploy.paths.locales
   end
 end

@@ -1,5 +1,6 @@
 require 'active_support/callbacks'
 require 'active_support/notifications'
+require 'active_support/core_ext/module/delegation'
 
 module Git
   module Deploy
@@ -34,6 +35,19 @@ module Git
           set_callback :interrupt, &block
         end
       end
+
+      ##
+      # Shortcut to the i18n api.
+      def t( *args )
+        I18n.translate *args
+      end
+
+      ##
+      # Borrow a shell from Thor in case we need to say anything.
+      def shell
+        @shell ||= Thor::Base.shell.new
+      end
+      delegate :say, :to => :shell
 
       ##
       # Instrument all plugin callbacks.

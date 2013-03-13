@@ -10,18 +10,14 @@ module Git
       ##
       # Adds a plugin to the plugin stack.
       def self.use( plugin_class )
+        # Forward deploy callbacks to the plugin instance.
         set_callback :deploy, :around do |&block|
           plugins[ plugin_class ].run_callbacks :deploy, &block
         end
+        # Forward interrupt callbacks to the plugin instance.
         set_callback :interrupt, :around do |&block|
           plugins[ plugin_class ].run_callbacks :interrupt, &block
         end
-      end
-
-      ##
-      #
-      def plugins
-        @plugins ||= Hash.new { |h, k| h[ k ] = k.new( env ) }
       end
 
       ##
@@ -34,12 +30,7 @@ module Git
       ##
       # Runs the deploy plugins around a push to the specified remote.
       def run!
-        trap 'INT' do |signo|
-          run_callbacks :interrupt do
-            puts 'Exiting...'
-            exit 1
-          end
-        end
+        trap( 'INT' ){ run_callbacks( :interrupt ){ exit 1 } }
 
         run_callbacks :deploy do
           puts 'SLEEPING'
@@ -47,6 +38,13 @@ module Git
           puts 'AWAKE AGAIN'
           # Git[ 'push', remote, refspec, '--dry-run' ]
         end
+      end
+
+      ##
+      # A managed hash of all plugin instances by class.
+      # Because singletons are for chumps.
+      def plugins
+        @plugins ||= Hash.new { |h, k| h[ k ] = k.new( env ) }
       end
 
       ##
@@ -65,5 +63,5 @@ Git::Deploy::Runner.instance_eval <<-RUBY
   require 'git-deploy/plugins/hipchat_status'
 
   use Git::Deploy::Plugins::Status
-  use Git::Deploy::Plugins::HipChatStatus
+  # use Git::Deploy::Plugins::HipChatStatus
 RUBY

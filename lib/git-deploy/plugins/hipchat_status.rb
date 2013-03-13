@@ -3,17 +3,20 @@ require 'hipchat'
 class Git::Deploy::Plugins::HipChatStatus < Git::Deploy::Plugin
 
   before do
-    client[ 'Developers' ].send 'Deploy',
-      '%s initiated deployment of %s to %s' % [ env.user, env.branch, env.remote ],
-      :notify => true, :color => 'yellow'
+    hipchat 'deploy.initiated', :notify => true, :color => 'yellow'
+  end
+
+  after do
+    hipchat 'deploy.finished', :notify => true, :color => 'green'
   end
 
   interrupt do
-    client[ 'Developers' ].send 'Deploy',
-      '%s interrupted the deployment' % [ env.user ],
-      :notify => true, :color => 'red'
+    hipchat 'deploy.interrupted', :notify => true, :color => 'red'
   end
 
+  def hipchat( msg, options={} )
+    client[ 'Developers' ].send 'Deploy', t( msg, env.to_hash ), options
+  end
 
   # TODO look at other message formatting options, like HTML
   # https://github.com/hipchat/hipchat-rb

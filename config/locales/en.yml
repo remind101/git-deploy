@@ -1,0 +1,6 @@
+en:
+  deploy:
+    initiated: '%{user} initiated deployment of %{branch} to %{remote}'
+    finished: '%{user} finished deployment of %{branch} to %{remote}'
+    interrupted: '%{user} interrupted deployment of %{branch} to %{remote}'
+

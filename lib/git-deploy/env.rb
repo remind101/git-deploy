@@ -11,11 +11,19 @@ module Git
       end
 
       def tag
+        # TODO use I18n for this format
         @tag ||= Time.now.strftime '%F.%I%M%p'
       end
 
       def user
         @user ||= Git[ 'config', '--global', 'user.email' ]
+      end
+
+      def to_hash
+        %w| remote refspec ref branch tag user |.reduce( { } ) do |hsh, key|
+          hsh[ key.to_sym ] = send( key )
+          hsh
+        end
       end
 
 

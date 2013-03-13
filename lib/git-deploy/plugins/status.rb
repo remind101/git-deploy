@@ -1,14 +1,14 @@
 class Git::Deploy::Plugins::Status < Git::Deploy::Plugin
 
   before do
-    puts 'Deploying %s to %s' % [ env.branch, env.remote ]
+    say t( 'deploy.initiated', env.to_hash ), :yellow
   end
 
   after do
-    puts 'Deployed successfully!'
+    say t( 'deploy.finished', env.to_hash ), :green
   end
 
   interrupt do
-    puts 'Deploy interrupted.'
+    say t( 'deploy.interrupted', env.to_hash ), :red
   end
 end
