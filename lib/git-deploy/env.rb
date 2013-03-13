@@ -9,6 +9,7 @@ module Git
       property :branch
       property :tag
       property :user
+      property :sha
 
       ##
       # Initializes this env. Expects the keys `remote` and `refspec` to
@@ -20,6 +21,7 @@ module Git
         self[ :branch ] = File.basename( ref )
         self[ :tag    ] = I18n.l Time.now, :format => :tag
         self[ :user   ] = Git[ 'config', '--global', 'user.email' ]
+        self[ :sha    ] = Git[ 'rev-parse', '--short', refspec ]
       end
 
       ##
@@ -27,17 +29,6 @@ module Git
       def to_hash
         super :symbolize_keys => true
       end
-
-      # export ref=$(git symbolic-ref HEAD)
-      # export branch=$(basename $ref)
-      # export remote=$(git config deploy.$branch.remote)
-      # export schema=$(git config deploy.$branch.schema)
-      # export tag=$(date +'%F.%I%M%p')
-      # export app=$(git config remote.$remote.url | sed 's/git@heroku.com://;s/.git//')
-      # export origin=$(git config remote.origin.url | sed 's/git@github.com://;s/.git//')
-      # export user=$(git config --global user.email)
-      # export sha=$(git rev-parse --short HEAD)
-      # export now=$(date +%s)
     end
   end
 end

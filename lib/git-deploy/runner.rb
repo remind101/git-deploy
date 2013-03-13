@@ -52,6 +52,13 @@ module Git
       def env
         @env ||= Env.new :remote => remote, :refspec => refspec
       end
+
+      ##
+      # Instrument all deploy runs.
+      set_callback :deploy, :before do
+        ActiveSupport::Notifications.instrument \
+          'before.deploy', { :env => env }
+      end
     end
   end
 end

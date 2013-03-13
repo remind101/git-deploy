@@ -9,6 +9,14 @@ module Git
 
       ##
       #
+      def before( event )
+        event.payload[ :env ].each do |key, value|
+          debug "%s[%s]=%s" % [ color( 'env', BLUE ), key, value ]
+        end
+      end
+
+      ##
+      #
       def plugin( event )
         debug '%s (%.1fms)' % [
           color( event.payload[ :plugin ], YELLOW ), event.duration ]

@@ -5,8 +5,8 @@ en:
     formats:
       tag: '%F.%I%M%p'
   deploy:
-    initiated: '%{user} initiated deployment of %{branch} to %{remote}'
-    finished: '%{user} finished deployment of %{branch} to %{remote}'
-    interrupted: '%{user} interrupted deployment of %{branch} to %{remote}'
+    initiated: '%{user} initiated deployment of %{branch} (%{sha}) to %{remote}'
+    finished: '%{user} finished deployment of %{branch} (%{sha}) to %{remote}'
+    interrupted: '%{user} interrupted deployment of %{branch} (%{sha}) to %{remote}'
 
 
