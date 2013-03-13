@@ -6,38 +6,5 @@ require 'git-deploy'
 require 'dotenv'
 Dotenv.load
 
-# _____________________________________________________________________
-
-require 'thor'
-
-module Git
-  module Deploy
-    class CLI < Thor
-
-      desc 'plugins', 'Prints all available plugins'
-
-      def plugins
-        puts Git::Deploy.plugins.map( &:basename )
-      end
-
-      Git::Deploy.remotes.each do |remote|
-
-        class_eval <<-RUBY
-
-        desc '#{remote} [<refspec>]', 'Deploy <refspec> to #{remote}'
-
-        def #{remote}( refspec='HEAD' )
-          Git::Deploy.deploy '#{remote}', refspec
-        end
-        RUBY
-      end
-
-    end
-  end
-end
-
-# _____________________________________________________________________
-
-
 # Start the CLI
 Git::Deploy::CLI.start
