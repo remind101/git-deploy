@@ -5,15 +5,8 @@ module Git
     class CLI < Thor
 
       ##
-      # Prints all available plugins.
-      desc 'plugins', 'Prints all available plugins'
-      def plugins
-        puts Git::Deploy.plugins.map( &:basename )
-      end
-
-      ##
       # Set up a deploy command for each git remote.
-      Git::Deploy.remotes.each do |remote|
+      Git::GIT.remotes.map(&:name).each do |remote|
         class_eval <<-RUBY
 
         ##

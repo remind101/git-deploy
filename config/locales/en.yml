@@ -11,3 +11,6 @@ en:
   maintenance:
     enabled: 'Maintenance mode enabled for %{app}'
     disabled: 'Maintenance mode disabled for %{app}'
+  workers:
+    current: 'Currently running %{count} workers'
+    scaling: 'Scaling %{app} to %{count} workers'

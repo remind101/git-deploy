@@ -1,18 +1,28 @@
 require 'hipchat'
 
-class Git::Deploy::Plugins::HipChatStatus < Git::Deploy::Plugin
+class Git::Deploy::Middleware::HipChatStatus
 
-  before do
-    hipchat 'deploy.initiated', :notify => true, :color => 'yellow'
+  def initialize( app )
+    @app = app
   end
 
-  after do
-    hipchat 'deploy.finished', :notify => true, :color => 'green'
-  end
+  def call( env )
+    remote, object = env
 
-  interrupt do
-    hipchat 'deploy.interrupted', :notify => true, :color => 'red'
+    puts remote, object
+
   end
+  # before do
+  #   hipchat 'deploy.initiated', :notify => true, :color => 'yellow'
+  # end
+  #
+  # after do
+  #   hipchat 'deploy.finished', :notify => true, :color => 'green'
+  # end
+  #
+  # interrupt do
+  #   hipchat 'deploy.interrupted', :notify => true, :color => 'red'
+  # end
 
   ##
   # Send a message to the developers hipchat room.
