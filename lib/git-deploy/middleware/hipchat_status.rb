@@ -7,11 +7,15 @@ class Git::Deploy::Middleware::HipChatStatus
   end
 
   def call( env )
-    remote, object = env
+    puts '==> [hipchat status] before call'
 
-    puts remote, object
+    remote, object = @app.call( env )
 
+    puts '==> [hipchat status] after call'
+
+    [ remote, object ]
   end
+
   # before do
   #   hipchat 'deploy.initiated', :notify => true, :color => 'yellow'
   # end

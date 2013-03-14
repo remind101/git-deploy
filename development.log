@@ -1,0 +1,125 @@
+2013-03-14T09:50:25-07:00 [ INFO] 14990 : Starting Git
+2013-03-14T09:50:25-07:00 [ INFO] 14990 : git remote   2>&1
+2013-03-14T09:50:25-07:00 [DEBUG] 14990 : origin
+2013-03-14T09:50:25-07:00 [ INFO] 14990 : git config "--list"  2>&1
+2013-03-14T09:50:25-07:00 [DEBUG] 14990 : user.name=Jeremy Ruppel
+user.email=jeremy.ruppel@gmail.com
+color.ui=auto
+color.branch.current=yellow reverse
+color.branch.local=yellow
+color.branch.remote=green
+color.diff.meta=yellow bold
+color.diff.frag=magenta bold
+color.diff.old=red bold
+color.diff.new=green bold
+color.status.added=yellow
+color.status.changed=green
+color.status.untracked=cyan
+color.ui=true
+color.diff.whitespace=red reverse
+core.whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+alias.st=status
+alias.ci=commit
+alias.br=branch
+alias.co=checkout
+alias.df=diff
+alias.dc=diff --cached
+alias.lg=log -p
+alias.lol=log --graph --decorate --pretty=oneline --abbrev-commit
+alias.lola=log --graph --decorate --pretty=oneline --abbrev-commit --all
+alias.ls=ls-files
+alias.ign=ls-files -o -i --exclude-standard
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+core.ignorecase=true
+core.precomposeunicode=false
+remote.origin.url=git@github.com:jeremyruppel/git-deploy.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.master.remote=origin
+branch.master.merge=refs/heads/master
+remote.origin=-l
+2013-03-14T09:50:29-07:00 [ INFO] 15028 : Starting Git
+2013-03-14T09:50:29-07:00 [ INFO] 15028 : git remote   2>&1
+2013-03-14T09:50:29-07:00 [DEBUG] 15028 : origin
+2013-03-14T09:50:29-07:00 [ INFO] 15028 : git config "--list"  2>&1
+2013-03-14T09:50:29-07:00 [DEBUG] 15028 : user.name=Jeremy Ruppel
+user.email=jeremy.ruppel@gmail.com
+color.ui=auto
+color.branch.current=yellow reverse
+color.branch.local=yellow
+color.branch.remote=green
+color.diff.meta=yellow bold
+color.diff.frag=magenta bold
+color.diff.old=red bold
+color.diff.new=green bold
+color.status.added=yellow
+color.status.changed=green
+color.status.untracked=cyan
+color.ui=true
+color.diff.whitespace=red reverse
+core.whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+alias.st=status
+alias.ci=commit
+alias.br=branch
+alias.co=checkout
+alias.df=diff
+alias.dc=diff --cached
+alias.lg=log -p
+alias.lol=log --graph --decorate --pretty=oneline --abbrev-commit
+alias.lola=log --graph --decorate --pretty=oneline --abbrev-commit --all
+alias.ls=ls-files
+alias.ign=ls-files -o -i --exclude-standard
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+core.ignorecase=true
+core.precomposeunicode=false
+remote.origin.url=git@github.com:jeremyruppel/git-deploy.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.master.remote=origin
+branch.master.merge=refs/heads/master
+remote.origin=-l
+2013-03-14T09:50:30-07:00 [ INFO] 15028 : git config "--list"  2>&1
+2013-03-14T09:50:30-07:00 [DEBUG] 15028 : user.name=Jeremy Ruppel
+user.email=jeremy.ruppel@gmail.com
+color.ui=auto
+color.branch.current=yellow reverse
+color.branch.local=yellow
+color.branch.remote=green
+color.diff.meta=yellow bold
+color.diff.frag=magenta bold
+color.diff.old=red bold
+color.diff.new=green bold
+color.status.added=yellow
+color.status.changed=green
+color.status.untracked=cyan
+color.ui=true
+color.diff.whitespace=red reverse
+core.whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+alias.st=status
+alias.ci=commit
+alias.br=branch
+alias.co=checkout
+alias.df=diff
+alias.dc=diff --cached
+alias.lg=log -p
+alias.lol=log --graph --decorate --pretty=oneline --abbrev-commit
+alias.lola=log --graph --decorate --pretty=oneline --abbrev-commit --all
+alias.ls=ls-files
+alias.ign=ls-files -o -i --exclude-standard
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+core.ignorecase=true
+core.precomposeunicode=false
+remote.origin.url=git@github.com:jeremyruppel/git-deploy.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.master.remote=origin
+branch.master.merge=refs/heads/master
+remote.origin=-l
+2013-03-14T09:50:30-07:00 [ INFO] 15028 : git cat-file "-t" "HEAD"  2>&1
+2013-03-14T09:50:30-07:00 [DEBUG] 15028 : commit

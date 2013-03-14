@@ -6,7 +6,7 @@ module Git
 
       ##
       # Set up a deploy command for each git remote.
-      Git::GIT.remotes.map(&:name).each do |remote|
+      Git::Deploy.git.remotes.map(&:name).each do |remote|
         class_eval <<-RUBY
 
         ##
