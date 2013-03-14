@@ -1,15 +1,13 @@
 require 'git-deploy/version'
+require 'git'
 require 'middleware'
 
-##
-# TODO can we put this somewhere else?
-I18n.load_path.concat \
-  Dir[ File.expand_path( '../../config/locales/*.yml', __FILE__ ) ]
+# I18n.load_path.concat \
+#   Dir[ File.expand_path( '../../config/locales/*.yml', __FILE__ ) ]
 
 module Git
   module Deploy
     autoload :CLI,        'git-deploy/cli'
-    autoload :Runner,     'git-deploy/runner'
     autoload :Middleware, 'git-deploy/middleware'
 
     class << self
@@ -35,11 +33,7 @@ module Git
       ##
       # The git client for this repository.
       def git
-        @git ||= Git.open Dir.pwd, :log => Yell.new do |l|
-          l.level = ENV[ 'LOG_LEVEL' ] ||= 'info'
-          l.adapter STDOUT, :level => [ :debug, :info, :warn ]
-          l.adapter STDERR, :level => [ :error, :fatal ]
-        end
+        @git ||= Git.open Dir.pwd
       end
 
     end
