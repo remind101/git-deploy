@@ -1,17 +1,18 @@
 class Git::Deploy::Middleware::GitPush
-
-  def initialize( app )
-    @app = app
-  end
-  attr_reader :app
+  include Git::Deploy::Middleware
 
   def call( env )
     puts '==> [git push] before call'
 
-    remote, object = @app.call( env )
+    remote, refspec = env
 
-    puts '==> [git push] after call'
+    command.run :remote => remote.name, :refspec => refspec.name
 
-    [ remote, object ]
+    @app.call [ remote, object ]
+  end
+
+  def command
+    # TODO --force?
+    Cocaine::CommandLine.new 'git', 'push :remote :refspec --dry-run'
   end
 end

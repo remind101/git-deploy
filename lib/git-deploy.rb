@@ -1,7 +1,4 @@
 require 'git-deploy/version'
-require 'i18n'
-require 'git'
-require 'yell'
 require 'middleware'
 
 ##
@@ -11,13 +8,9 @@ I18n.load_path.concat \
 
 module Git
   module Deploy
-    autoload :CLI, 'git-deploy/cli'
-
-    ##
-    # Namespace for deploy middleware. Define which plugins you want
-    # to use in `.gitdeploy`.
-    module Middleware
-    end
+    autoload :CLI,        'git-deploy/cli'
+    autoload :Runner,     'git-deploy/runner'
+    autoload :Middleware, 'git-deploy/middleware'
 
     class << self
 
@@ -32,8 +25,10 @@ module Git
       def runner
         @runner ||= ::Middleware::Builder.new do
           require 'git-deploy/middleware/hipchat_status'
+          require 'git-deploy/middleware/git_push'
 
           use Git::Deploy::Middleware::HipChatStatus
+          use Git::Deploy::Middleware::GitPush
         end
       end
 
