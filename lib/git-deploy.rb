@@ -1,4 +1,5 @@
 require 'git-deploy/version'
+require 'thor'
 require 'git'
 require 'middleware'
 
@@ -9,6 +10,12 @@ module Git
   module Deploy
     autoload :CLI,        'git-deploy/cli'
     autoload :Middleware, 'git-deploy/middleware'
+
+    ##
+    # Raise this error to have thor print the message, and exit.
+    class Interrupt < Thor::Error
+      def initialize; super 'User cancelled the deploy.'; end
+    end
 
     class << self
 

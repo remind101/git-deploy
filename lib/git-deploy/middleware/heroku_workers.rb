@@ -1,36 +1,16 @@
-require 'heroku-api'
+class Git::Deploy::Middleware::HerokuWorkers
+  include Git::Deploy::Middleware
 
-class Git::Deploy::Plugins::HerokuWorkers < Git::Deploy::Plugin
+  def call( env )
+    # TODO only if remote.heroku?
+    @workers = sh( 'heroku', 'ps' ).lines.grep( /^worker\./ ).count
 
-  before :if => :heroku_app? do
-    @workers = client.get_app( env.app ).body[ 'workers' ]
-    say t( 'workers.current', :count => @workers )
-  end
+    sh 'heroku', 'ps:scale worker=0'
 
-  before :if => :heroku_app? do
-    client.post_ps_scale env.app, 'worker', 0
-    say t( 'workers.scaling', :count => 0 ), :yellow
-  end
+    env = app.call env
 
-  after :if => :heroku_app? do
-    client.post_ps_scale env.app, 'worker', @workers
-    say t( 'workers.scaling', :count => @workers ), :green
-  end
+    sh 'heroku', "ps:scale worker=#{@workers}"
 
-  interrupt :if => :heroku_app? do
-    client.post_ps_scale env.app, 'worker', @workers
-    say t( 'workers.scaling', :count => @workers ), :green
-  end
-
-  ##
-  # Is this a heroku app?
-  def heroku_app?
-    env.app != nil
-  end
-
-  ##
-  # A heroku api client. Expects HEROKU_API_KEY to be set in ENV.
-  def client
-    @client ||= Heroku::API.new
+    env
   end
 end

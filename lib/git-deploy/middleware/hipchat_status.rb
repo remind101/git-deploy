@@ -1,19 +1,24 @@
 require 'hipchat'
 
 class Git::Deploy::Middleware::HipChatStatus
-
-  def initialize( app )
-    @app = app
-  end
+  include Git::Deploy::Middleware
 
   def call( env )
-    puts '==> [hipchat status] before call'
 
-    remote, object = @app.call( env )
+    puts 'HIPCHAT!!!'
+    require 'pry'
+    binding.pry
+    # initiated: '%{user} initiated deployment of %{branch} (%{sha}) to %{remote}'
+    # finished: '%{user} finished deployment of %{branch} (%{sha}) to %{remote}'
+    remote, refspec = env
 
-    puts '==> [hipchat status] after call'
+    hipchat '%s initiated deployment of %s (%s) to %s' % [ git.config[ 'user.email' ], refspec.name, refspec.sha ]
 
-    [ remote, object ]
+    app.call [ remote, refspec ]
+
+    # puts '==> [hipchat status] after call'
+
+    [ remote, refspec ]
   end
 
   # before do

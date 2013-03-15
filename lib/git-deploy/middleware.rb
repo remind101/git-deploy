@@ -1,8 +1,6 @@
 require 'thor'
 require 'active_support/core_ext/string/inflections'
-
-# TODO concern?
-# TODO delegate shell methods?
+require 'active_support/core_ext/module/delegation'
 
 module Git
   module Deploy
@@ -17,13 +15,18 @@ module Git
 
       ##
       # Shells out the given command, providing nice output.
-      def sh( cmd )
+      def sh( cmd, args )
         # STDOUT.sync = true
 
-        shell.say "[#{middleware_name}] "
-        shell.say cmd, :cyan
+        say_status cmd, args
 
-        IO.popen( cmd ).each { |line| shell.say line }
+        `#{cmd} #{args}`
+      end
+
+      ##
+      # A shortcut to the shared git client instance.
+      def git
+        Git::Deploy.git
       end
 
       ##
@@ -31,12 +34,7 @@ module Git
       def shell
         @shell ||= Thor::Base.shell.new
       end
-
-      ##
-      # The display name for this middleware.
-      def middleware_name
-        self.class.to_s.demodulize.parameterize '-'
-      end
+      delegate :say, :say_status, :to => :shell
     end
   end
 end
