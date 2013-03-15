@@ -1,6 +1,4 @@
 require 'thor'
-require 'active_support/core_ext/string/inflections'
-require 'active_support/core_ext/module/delegation'
 
 module Git
   module Deploy
@@ -18,7 +16,7 @@ module Git
       def sh( cmd, args )
         # STDOUT.sync = true
 
-        say_status cmd, args
+        shell.say_status cmd, args
 
         `#{cmd} #{args}`
       end
@@ -34,7 +32,6 @@ module Git
       def shell
         @shell ||= Thor::Base.shell.new
       end
-      delegate :say, :say_status, :to => :shell
     end
   end
 end

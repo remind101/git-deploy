@@ -21,8 +21,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'dotenv',        '~> 0.5.0'
   gem.add_dependency 'middleware',    '~> 0.1.0'
   gem.add_dependency 'git',           '~> 1.2.5'
-  gem.add_dependency 'activesupport', '~> 3.2.12'
-  gem.add_dependency 'cocaine',       '~> 0.5.1'
 
   # Plugin dependencies
   # TODO make these soft dependencies?
