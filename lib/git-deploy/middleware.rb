@@ -55,7 +55,7 @@ module Git
       ##
       # Override backtick method to print executing commands to the shell.
       def `( cmd )
-        shell.say_status *cmd.split( ' ', 2 )
+        shell.say_status *cmd.delete( '\\' ).split( ' ', 2 )
         super
       end
 
