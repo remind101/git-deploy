@@ -8,7 +8,7 @@ describe Git::Deploy::Middleware::GitPush, :middleware => true do
   it { should be_a( Git::Deploy::Middleware ) }
 
   it 'performs the correct steps in order' do
-    step subject, :`,   'git push staging develop --dry-run'
+    step subject, :`,   'git push staging develop --dry-run --quiet'
     step app,     :call, env
 
     subject.call env

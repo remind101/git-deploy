@@ -7,7 +7,7 @@ class Git::Deploy::Middleware::GitPush
     remote, refspec = env
 
     # TODO force push
-    `git push #{remote.name} #{refspec.name} --dry-run`
+    `git push #{remote.name} #{refspec.name} --dry-run --quiet`
 
     app.call env
   rescue Interrupt => e

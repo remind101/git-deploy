@@ -24,7 +24,7 @@ shared_context 'middleware', :middleware => true do
 
   ##
   # Stub this system's user.
-  before { subject.stub :user => 'jeremyruppel' }
+  before { subject.stub :user => 'jeremy.ruppel@gmail.com' }
 
   ##
   # Silence the middleware shell during test runs.

@@ -1,4 +1,0 @@
----
-:command: git push staging develop --dry-run
-:output: ''
-:exitstatus: 0

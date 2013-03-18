@@ -16,10 +16,4 @@ class Git::Deploy::Middleware::Hipchat
 
     raise
   end
-
-  # TODO make this available to all middleware
-  # TODO use something like `git config user.email` instead
-  def user
-    ENV[ 'USER' ]
-  end
 end

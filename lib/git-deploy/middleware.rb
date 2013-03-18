@@ -39,6 +39,18 @@ module Git
       def shell
         @shell ||= Thor::Base.shell.new
       end
+
+      ##
+      # The current git user's email.
+      def user
+        git.config[ 'user.email' ]
+      end
+
+      ##
+      #
+      def git
+        Git::Deploy::CLI::GIT
+      end
     end
   end
 end
