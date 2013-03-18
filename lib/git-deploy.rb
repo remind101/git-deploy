@@ -1,58 +1,27 @@
 require 'git-deploy/version'
+require 'thor'
+require 'git'
 
 module Git
-
-  ##
-  # Executes the given git command.
-  def self.[]( *args )
-    `git #{ args.join ' ' }`.chomp
-  end
-
   module Deploy
-    autoload :CLI,           'git-deploy/cli'
-    autoload :Env,           'git-deploy/env'
-    autoload :LogSubscriber, 'git-deploy/log_subscriber'
-    autoload :Paths,         'git-deploy/paths'
-    autoload :Plugin,        'git-deploy/plugin'
-    autoload :Runner,        'git-deploy/runner'
+    autoload :CLI,        'git-deploy/cli'
+    autoload :Middleware, 'git-deploy/middleware'
+    autoload :Runner,     'git-deploy/runner'
 
     ##
-    # Namespace for deploy plugins. Define which plugins you want
-    # to use in `.gitdeploy`.
-    module Plugins
+    # Raise this error to have thor print the message, and exit.
+    class Interrupt < Thor::Error
+      def initialize; super 'User cancelled the deploy.'; end
     end
 
     class << self
 
       ##
-      # Returns an array of all git remotes for this repository.
-      def remotes
-        Git[ 'remote' ].lines.map( &:chomp )
-      end
-
-      ##
-      # Returns an array of the available plugin files.
-      def plugins
-        paths.plugins
-      end
-
-      ##
-      # The paths associated with this bundle.
-      def paths
-        @paths ||= Paths.new __FILE__
-      end
-
-      ##
-      # Runs the deploy plugins around a push to the specified remote.
-      def deploy( remote, refspec )
-        Runner.new( remote, refspec ).run!
+      # The git client for this repository.
+      def git
+        @git ||= Git.open Dir.pwd
       end
 
     end
-
-    ##
-    # Set up i18n
-    require 'i18n'
-    I18n.load_path.concat Git::Deploy.paths.locales
   end
 end

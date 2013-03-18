@@ -1,0 +1,4 @@
+---
+:command: hipchat say Deploying\ develop\ to\ staging --color yellow
+:output: ''
+:exitstatus: 0

@@ -4,26 +4,43 @@ module Git
   module Deploy
     class CLI < Thor
 
-      ##
-      # Prints all available plugins.
-      desc 'plugins', 'Prints all available plugins'
-      def plugins
-        puts Git::Deploy.plugins.map( &:basename )
+      Git::Deploy.git.remotes.each do |remote|
+
+        ##
+        # Defines a new thor command for deployment to the specified remote.
+        desc "#{remote} [<refspec>]", "Deploy <refspec> to #{remote}"
+
+        method_option :confirm, :type => :boolean
+
+        define_method remote.name do |refspec='HEAD'|
+          if options.confirm? && !yes?( "Really deploy #{refspec} to #{remote}?" )
+            raise Git::Deploy::Interrupt
+          end
+
+          runner.call [ remote, git.object( refspec ) ]
+        end
       end
 
       ##
-      # Set up a deploy command for each git remote.
-      Git::Deploy.remotes.each do |remote|
-        class_eval <<-RUBY
+      # Prints the current middleware stack.
+      desc 'stack', 'Prints the current middleware stack'
+      def stack
+        print_table runner.send( :stack ).unshift( %w| Class Args | )
+      end
+
+      no_tasks do
 
         ##
-        # Deploy <refspec> to #{remote}. Will deploy <HEAD> if no refspec
-        # is given.
-        desc '#{remote} [<refspec>]', 'Deploy <refspec> to #{remote}'
-        def #{remote}( refspec='HEAD' )
-          Git::Deploy.deploy '#{remote}', refspec
+        # The deploy middleware runner instance.
+        def runner
+          @runner ||= Git::Deploy::Runner.new
         end
-        RUBY
+
+        ##
+        # The shared git instance.
+        def git
+          Git::Deploy.git
+        end
       end
 
     end

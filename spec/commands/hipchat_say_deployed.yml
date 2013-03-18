@@ -1,0 +1,4 @@
+---
+:command: hipchat say Successfully\ deployed\ develop\ to\ staging --color green
+:output: ''
+:exitstatus: 0

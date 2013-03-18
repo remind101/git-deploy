@@ -1,0 +1,4 @@
+---
+:command: git push origin develop --dry-run
+:output: ''
+:exitstatus: 0

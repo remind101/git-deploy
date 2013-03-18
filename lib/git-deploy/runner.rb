@@ -1,77 +1,24 @@
-require 'active_support/callbacks'
+require 'middleware'
+require 'git-deploy/middleware/git_push'
+require 'git-deploy/middleware/heroku_maintenance'
+require 'git-deploy/middleware/heroku_workers'
+require 'git-deploy/middleware/hipchat'
 
 module Git
   module Deploy
-    class Runner
-      include ActiveSupport::Callbacks
-
-      define_callbacks :deploy, :interrupt
+    class Runner < ::Middleware::Builder
 
       ##
-      # Adds a plugin to the plugin stack.
-      def self.use( plugin_class )
-        # Forward deploy callbacks to the plugin instance.
-        set_callback :deploy, :around do |&block|
-          plugins[ plugin_class ].run_callbacks :deploy, &block
+      # Sets up the middleware stack for deploy runs.
+      def initialize
+        super do
+
+          # use Git::Deploy::Middleware::Hipchat
+          # use Git::Deploy::Middleware::HerokuMaintenance
+          use Git::Deploy::Middleware::HerokuWorkers
+          use Git::Deploy::Middleware::GitPush
         end
-        # Forward interrupt callbacks to the plugin instance.
-        set_callback :interrupt, :around do |&block|
-          plugins[ plugin_class ].run_callbacks :interrupt, &block
-        end
-      end
-
-      ##
-      #
-      def initialize( remote, refspec )
-        @remote, @refspec = remote, refspec
-      end
-      attr_reader :remote, :refspec
-
-      ##
-      # Runs the deploy plugins around a push to the specified remote.
-      def run!
-        trap( 'INT' ){ run_callbacks( :interrupt ){ exit 1 } }
-
-        run_callbacks :deploy do
-          puts 'SLEEPING'
-          sleep 10
-          puts 'AWAKE AGAIN'
-          # Git[ 'push', remote, refspec, '--dry-run' ]
-        end
-      end
-
-      ##
-      # A managed hash of all plugin instances by class.
-      # Because singletons are for chumps.
-      def plugins
-        @plugins ||= Hash.new { |h, k| h[ k ] = k.new( env ) }
-      end
-
-      ##
-      # The current git repo env.
-      def env
-        @env ||= Env.new :remote => remote, :refspec => refspec
-      end
-
-      ##
-      # Instrument all deploy runs.
-      set_callback :deploy, :before do
-        ActiveSupport::Notifications.instrument \
-          'before.deploy', { :env => env }
       end
     end
   end
 end
-
-# TODO move this elsewhere
-# TODO make this look at a `.gitdeploy` file?
-Git::Deploy::Runner.instance_eval <<-RUBY
-  require 'git-deploy/plugins/status'
-  require 'git-deploy/plugins/hipchat_status'
-  require 'git-deploy/plugins/heroku_maintenance'
-
-
-  use Git::Deploy::Plugins::Status
-  # use Git::Deploy::Plugins::HipChatStatus
-  use Git::Deploy::Plugins::HerokuMaintenance
-RUBY

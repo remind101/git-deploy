@@ -1,10 +1,4 @@
 #!/usr/bin/env ruby -KU
 
 require 'git-deploy'
-
-# Load the current ENV
-require 'dotenv'
-Dotenv.load
-
-# Start the CLI
 Git::Deploy::CLI.start
