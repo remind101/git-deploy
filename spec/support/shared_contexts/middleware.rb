@@ -2,7 +2,7 @@ shared_context 'middleware', :middleware => true do
 
   ##
   # A test double for the remote object.
-  let( :remote ){ double 'remote', :name => 'origin' }
+  let( :remote ){ double 'remote', :name => 'staging', :heroku? => 0 }
 
   ##
   # A test double for the refspec object.

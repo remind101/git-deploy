@@ -10,20 +10,23 @@ module Git
   module Deploy
     class Runner < ::Middleware::Builder
 
+      binding.pry
+
+      STACK = [
+        Git::Deploy::Middleware::Confirm,
+        # Git::Deploy::Middleware::Hipchat,
+        Git::Deploy::Middleware::HerokuMaintenance,
+        Git::Deploy::Middleware::HerokuWorkers,
+        Git::Deploy::Middleware::Migrate,
+        Git::Deploy::Middleware::GitPush
+      ]
+
       ##
       # Sets up the middleware stack for deploy runs.
       def initialize( options )
         @options = options
 
-        super() do
-
-          use Git::Deploy::Middleware::Confirm, options
-          # use Git::Deploy::Middleware::Hipchat
-          # use Git::Deploy::Middleware::HerokuMaintenance
-          use Git::Deploy::Middleware::HerokuWorkers
-          use Git::Deploy::Middleware::GitPush
-          use Git::Deploy::Middleware::Migrate
-        end
+        super(){ STACK.each { |middleware| use middleware, options } }
       end
       attr_reader :options
 

@@ -4,12 +4,12 @@ class Git::Deploy::Middleware::Hipchat
   def call( env )
     remote, refspec = env
 
-    sh 'hipchat', 'say', 'Deploying develop to staging',
+    sh 'hipchat', 'say', "Deploying #{refspec.name} to #{remote.name}",
       :color => 'yellow'
 
     env = app.call env
 
-    sh 'hipchat', 'say', 'Successfully deployed develop to staging',
+    sh 'hipchat', 'say', "Successfully deployed #{refspec.name} to #{remote.name}",
       :color => 'green'
 
     env
@@ -17,6 +17,7 @@ class Git::Deploy::Middleware::Hipchat
   rescue Interrupt => e
     sh 'hipchat', 'say', 'Deployment interrupted',
       :color => 'red'
+
     raise
   end
 end

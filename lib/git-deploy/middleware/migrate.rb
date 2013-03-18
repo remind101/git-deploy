@@ -4,12 +4,12 @@ class Git::Deploy::Middleware::Migrate
   ##
   # Runs pending migrations if the migrate option was given.
   def call( env )
-    remote, refspec = env
+    remote, refspec = app.call env
 
-    if options.migrate?
+    if remote.heroku? && options.migrate?
       sh 'heroku', 'run', 'rake' 'db:migrate', :remote => remote.name
     end
 
-    app.call env
+    [ remote, refspec ]
   end
 end

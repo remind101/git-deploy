@@ -2,17 +2,25 @@ class Git::Deploy::Middleware::HerokuMaintenance
   include Git::Deploy::Middleware
 
   def call( env )
-    # TODO only if remote.heroku?
-    # TODO need to specify the remote or app here
-    sh 'heroku', 'maintenance:on', :remote => 'staging'
+    remote, refspec = env
 
-    env = app.call env
+    if remote.heroku?
+      # TODO need to specify the remote or app here
+      sh 'heroku', 'maintenance:on', :remote => 'staging'
+    end
 
-    sh 'heroku', 'maintenance:off', :remote => 'staging'
+    env = app.call [ remote, refspec ]
+
+    if remote.heroku?
+      sh 'heroku', 'maintenance:off', :remote => 'staging'
+    end
 
     env
   rescue Interrupt => e
-    sh 'heroku', 'maintenance:off', :remote => 'staging'
+    if remote.heroku?
+      sh 'heroku', 'maintenance:off', :remote => 'staging'
+    end
+
     raise
   end
 end

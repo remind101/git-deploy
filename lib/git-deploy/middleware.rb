@@ -3,6 +3,8 @@ require 'shellwords'
 
 class Array
 
+  ##
+  # Removes and returns the last item in the array if it is a hash.
   def extract_options!
     last.is_a?( Hash ) ? pop : { }
   end
@@ -10,6 +12,8 @@ end
 
 class String
 
+  ##
+  # String shellflags are used straight up.
   def shellflag
     self
   end
@@ -17,8 +21,20 @@ end
 
 class Symbol
 
+  ##
+  # Symbol shellflags are hyphenated and prefixed with '--'.
+  # For example, :dry_run will become '--dry-run'.
   def shellflag
     '--' + to_s.gsub( '_', '-' )
+  end
+end
+
+class Git::Remote
+
+  ##
+  # Whether or not this remote exists on the heroku platform.
+  def heroku?
+    /^git@heroku\.com:/ =~ url
   end
 end
 
