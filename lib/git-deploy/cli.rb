@@ -1,19 +1,24 @@
 require 'thor'
+require 'git'
 
 module Git
   module Deploy
     class CLI < Thor
 
-      Git::Deploy.git.remotes.each do |remote|
+      ##
+      # Create a new git client.
+      GIT = Git.open Dir.pwd
 
-        ##
-        # Defines a new thor command for deployment to the specified remote.
+      ##
+      # Define a new thor command for deploying to each remote.
+      GIT.remotes.each do |remote|
+
         desc "#{remote} [<refspec>]", "Deploy <refspec> to #{remote}"
 
         method_option :confirm, :type => :boolean, :default => false
 
         define_method remote.name do |refspec='HEAD'|
-          runner.call [ remote, git.object( refspec ) ]
+          runner.call [ remote, GIT.object( refspec ) ]
         end
       end
 
@@ -21,7 +26,7 @@ module Git
       # Prints the current middleware stack.
       desc 'stack', 'Prints the current middleware stack'
       def stack
-        print_table runner.send( :stack )
+        print_table runner.stack
       end
 
       no_tasks do
@@ -30,12 +35,6 @@ module Git
         # The deploy middleware runner instance.
         def runner
           @runner ||= Git::Deploy::Runner.new options
-        end
-
-        ##
-        # The shared git instance.
-        def git
-          Git::Deploy.git
         end
       end
 

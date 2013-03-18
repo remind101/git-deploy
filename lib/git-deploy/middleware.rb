@@ -60,12 +60,6 @@ module Git
       end
 
       ##
-      # A shortcut to the shared git client instance.
-      def git
-        Git::Deploy.git
-      end
-
-      ##
       # Borrow a shell instance from thor.
       def shell
         @shell ||= Thor::Base.shell.new

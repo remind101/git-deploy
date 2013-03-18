@@ -24,6 +24,10 @@ module Git
         end
       end
       attr_reader :options
+
+      ##
+      # Make the middleware stack public so the CLI can see it.
+      public :stack
     end
   end
 end
