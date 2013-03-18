@@ -5,15 +5,15 @@ require 'net/https'
 
 class Hipchat < Thor
 
-  desc 'say [MESSAGE]', 'Say a thing to a room, like "wassup?"'
+  desc 'say [MESSAGE]', 'Say a thing to a room'
 
-  method_option :auth_token, :required => true
-  method_option :room_id,    :required => true
-  method_option :from,       :required => true
+  method_option :auth_token, :default => ENV[ 'HIPCHAT_AUTH_TOKEN' ]
+  method_option :room_id,    :default => 'Developers'
+  method_option :from,       :default => 'Deploy'
   method_option :notify,     :type => :boolean, :default => '1'
   method_option :color,      :type => :string
 
-  def say( message='wassup?' )
+  def say( message )
     uri  = URI 'https://api.hipchat.com/v1/rooms/message'
 
     req  = Net::HTTP::Post.new uri.path

@@ -54,11 +54,8 @@ module Git
 
       ##
       # Override backtick method to print executing commands to the shell.
-      # Flags may be filtered out for cleaner output.
       def `( cmd )
-        filters = %r{\s--auth-token\s[a-f0-9]{30}}
-
-        shell.say_status *cmd.gsub( filters, '' ).split( ' ', 2 )
+        shell.say_status *cmd.split( ' ', 2 )
         super
       end
 

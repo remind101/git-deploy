@@ -20,12 +20,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'thor',          '~> 0.17.0'
   gem.add_dependency 'middleware',    '~> 0.1.0'
   gem.add_dependency 'git',           '~> 1.2.5'
-
-  # Plugin dependencies
-  # TODO make these soft dependencies?
   gem.add_dependency 'dotenv',        '~> 0.5.0'
-  gem.add_dependency 'hipchat',       '~> 0.7.0'
-  gem.add_dependency 'heroku',        '~> 2.35.0'
 
   gem.add_development_dependency 'pry',         '0.9.12'
   gem.add_development_dependency 'rspec',       '2.13.0'

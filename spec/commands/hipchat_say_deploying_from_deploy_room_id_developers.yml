@@ -1,4 +1,0 @@
----
-:command: hipchat say Deploying\ develop\ to\ staging --auth-token 000000000000000000000000000000 --room-id Developers --from Deploy --color yellow
-:output: ''
-:exitstatus: 0
