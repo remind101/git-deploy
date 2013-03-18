@@ -3,13 +3,13 @@ class Git::Deploy::Middleware::HerokuWorkers
 
   def call( env )
     # TODO only if remote.heroku?
-    @workers = sh( 'heroku', 'ps' ).lines.grep( /^worker\./ ).count
+    @workers = sh( 'heroku', 'ps --remote staging' ).lines.grep( /^worker\./ ).count
 
-    sh 'heroku', 'ps:scale worker=0'
+    sh 'heroku', 'ps:scale worker=0 --remote staging'
 
     env = app.call env
 
-    sh 'heroku', "ps:scale worker=#{@workers}"
+    sh 'heroku', "ps:scale worker=#{@workers} --remote staging"
 
     env
   end

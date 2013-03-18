@@ -1,0 +1,16 @@
+---
+:command: heroku ps --remote staging
+:output: ! '=== web: `bundle exec [FILTERED] start -p $PORT -e $RACK_ENV`
+
+  web.1: up 2013/03/16 17:42:48 (~ 23h ago)
+
+  web.2: up 2013/03/16 19:14:13 (~ 22h ago)
+
+
+  === worker: `bundle exec [FILTERED]`
+
+  worker.1: up 2013/03/17 11:29:28 (~ 6h ago)
+
+
+'
+:exitstatus: 0

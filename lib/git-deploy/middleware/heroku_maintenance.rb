@@ -3,9 +3,9 @@ class Git::Deploy::Middleware::HerokuMaintenance
 
   def call( env )
     # TODO need to specify the remote or app here
-    sh 'heroku', 'maintenance:on'
+    sh 'heroku', 'maintenance:on --remote staging'
     env = app.call env
-    sh 'heroku', 'maintenance:off'
+    sh 'heroku', 'maintenance:off --remote staging'
     env
   end
 end

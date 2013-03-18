@@ -1,0 +1,6 @@
+---
+:command: heroku ps:scale worker=1 --remote staging
+:output: ! 'Scaling worker processes... done, now running 1
+
+'
+:exitstatus: 0

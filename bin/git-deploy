@@ -1,12 +1,4 @@
 #!/usr/bin/env ruby -KU
 
-$: << File.expand_path('../../lib', __FILE__) # TODO remove this
-
 require 'git-deploy'
-
-# Load the current ENV
-require 'dotenv'
-Dotenv.load
-
-# Start the CLI
 Git::Deploy::CLI.start

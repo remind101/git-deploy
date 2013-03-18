@@ -14,8 +14,6 @@ module Git
       ##
       # Shells out the given command, providing nice output.
       def sh( cmd, args )
-        # STDOUT.sync = true
-
         shell.say_status cmd, args
 
         `#{cmd} #{args}`
