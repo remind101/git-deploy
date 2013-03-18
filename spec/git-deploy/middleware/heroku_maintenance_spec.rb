@@ -8,9 +8,9 @@ describe Git::Deploy::Middleware::HerokuMaintenance, :middleware => true do
   it { should be_a( Git::Deploy::Middleware ) }
 
   it 'performs the correct steps in order' do
-    step subject, :sh,  'heroku', 'maintenance:on --remote staging'
+    step subject, :`,   'heroku maintenance:on --remote staging'
     step app,     :call, env
-    step subject, :sh,  'heroku', 'maintenance:off --remote staging'
+    step subject, :`,   'heroku maintenance:off --remote staging'
 
     subject.call env
   end

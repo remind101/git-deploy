@@ -8,9 +8,9 @@ describe Git::Deploy::Middleware::Hipchat, :middleware => true do
   it { should be_a( Git::Deploy::Middleware ) }
 
   it 'performs the correct steps in order' do
-    step subject, :sh,   'hipchat', "say '[FILTERED]' --color yellow --auth-token [FILTERED] --room-id Developers --from Deploy"
+    step subject, :`,   'hipchat say Deploying\ develop\ to\ staging --auth-token 000000000000000000000000000000 --room-id Developers --from Deploy --color yellow'
     step app,     :call, env
-    step subject, :sh,   'hipchat', "say '[FILTERED]' --color yellow --auth-token [FILTERED] --room-id Developers --from Deploy"
+    step subject, :`,   'hipchat say Successfully\ deployed\ develop\ to\ staging --auth-token 000000000000000000000000000000 --room-id Developers --from Deploy --color green'
 
     subject.call env
   end

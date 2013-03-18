@@ -7,7 +7,7 @@ class Git::Deploy::Middleware::GitPush
     remote, refspec = env
 
     # TODO force push
-    sh 'git', "push #{remote.name} #{refspec.name} --dry-run"
+    sh 'git', 'push', remote.name, refspec.name, :dry_run => true
 
     app.call [ remote, refspec ]
   end

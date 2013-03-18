@@ -1,4 +1,0 @@
----
-:command: hipchat say '[FILTERED]' --color yellow --auth-token [FILTERED] --room-id Developers --from Deploy
-:output: ''
-:exitstatus: 0
