@@ -28,10 +28,10 @@ module Git
 
       ##
       # A boilerplate initialize method.
-      def initialize( app )
-        @app = app
+      def initialize( app, options={} )
+        @app, @options = app, options
       end
-      attr_reader :app
+      attr_reader :app, :options
 
       ##
       # Shells out the given command, escaping and joining arguments and flags.
