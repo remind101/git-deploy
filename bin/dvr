@@ -6,7 +6,7 @@ ENV[ 'DVR_DIR' ] ||= '.'
 
 command  = ARGV.join ' '
 output   = %x{#{command}}
-filename = command.gsub %r{\W+}, '_'
+filename = command.downcase.gsub %r{\W+}, '_'
 filepath = File.join ENV[ 'DVR_DIR' ], "#{filename}.yml"
 
 File.open filepath, 'w' do |f|
