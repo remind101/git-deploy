@@ -23,17 +23,23 @@ module Git
         end
       end
 
+      Git::Deploy.git.remotes.each do |remote|
+        define_remote_command remote.name
+      end
 
-      ##
-      #
-      # TODO this needs to be in an instance method. Is there a generic
-      # handler for thor commands.
-      # trap( 'INT' ){ runner.interrupt! }
+      no_tasks do
 
-      ##
-      #
-      def runner
-        @runner ||= Git::Deploy::Runner.new
+        ##
+        #
+        # TODO this needs to be in an instance method. Is there a generic
+        # handler for thor commands.
+        # trap( 'INT' ){ runner.interrupt! }
+
+        ##
+        #
+        def runner
+          @runner ||= Git::Deploy::Runner.new
+        end
       end
 
     end

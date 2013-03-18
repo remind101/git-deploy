@@ -9,6 +9,11 @@ class Git::Deploy::Middleware::GitPush
     # TODO force push
     sh 'git', 'push', remote.name, refspec.name, :dry_run => true
 
+
     app.call [ remote, refspec ]
+
+  rescue Interrupt => e
+    puts "INTERRUPT CAUGHT!"
+    puts e.inspect
   end
 end
