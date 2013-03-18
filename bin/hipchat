@@ -4,12 +4,14 @@ require 'thor'
 require 'net/https'
 require 'dotenv'
 
+Dotenv.load
+
 class Hipchat < Thor
 
   desc 'say [MESSAGE]', 'Say a thing to a room'
 
   method_option :auth_token, :default => ENV[ 'HIPCHAT_AUTH_TOKEN' ]
-  method_option :room_id,    :default => 'Developers'
+  method_option :room_id,    :default => 'ROBOTS ONLY'
   method_option :from,       :default => 'Deploy'
   method_option :notify,     :type => :boolean, :default => '1'
   method_option :color,      :type => :string
@@ -27,5 +29,4 @@ class Hipchat < Thor
   end
 end
 
-Dotenv.load
 Hipchat.start

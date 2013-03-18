@@ -23,7 +23,7 @@ module Git
         method_option :migrate, :type => :boolean, :default => false,
           :desc => 'Run pending migrations as part of the deployment'
 
-          # TODO a --no-hipchat option
+        # TODO a --no-hipchat option
 
         define_method remote.name do |refspec='HEAD'|
           runner.call [ remote, GIT.object( refspec ) ]

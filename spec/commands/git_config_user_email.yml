@@ -1,0 +1,6 @@
+---
+:command: git config user.email
+:output: ! 'jeremy.ruppel@gmail.com
+
+'
+:exitstatus: 0
