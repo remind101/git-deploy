@@ -5,24 +5,24 @@ class Git::Deploy::Middleware::HerokuWorkers
     remote, refspec = env
 
     if remote.heroku?
-      @workers = sh( 'heroku', 'ps', :remote => 'staging' ).lines.grep( /^worker\./ ).count
+      @workers = `heroku ps --remote #{remote}`.lines.grep( /^worker\./ ).count
     end
 
     if remote.heroku?
-      sh 'heroku', 'ps:scale', 'worker=0', :remote => 'staging'
+      `heroku ps:scale worker=0 --remote #{remote}`
     end
 
     env = app.call env
 
     if remote.heroku? && @workers
-      sh 'heroku', 'ps:scale', "worker=#{@workers}", :remote => 'staging'
+      `heroku ps:scale worker=#{@workers} --remote #{remote}`
     end
 
     env
 
   rescue Interrupt => e
     if remote.heroku? && @workers
-      sh 'heroku', 'ps:scale', "worker=#{@workers}", :remote => 'staging'
+      `heroku ps:scale worker=#{@workers} --remote #{remote}`
     end
 
     raise

@@ -2,11 +2,11 @@ shared_context 'middleware', :middleware => true do
 
   ##
   # A test double for the remote object.
-  let( :remote ){ double 'remote', :name => 'staging', :heroku? => 0 }
+  let( :remote ){ double 'remote', :name => 'staging', :heroku? => 0, :to_s => 'staging' }
 
   ##
   # A test double for the refspec object.
-  let( :refspec ){ double 'refspec', :name => 'develop' }
+  let( :refspec ){ double 'refspec', :name => 'develop', :to_s => 'develop' }
 
   ##
   # The request env
@@ -21,6 +21,10 @@ shared_context 'middleware', :middleware => true do
   def step( receiver, method, *args )
     receiver.should_receive( method ).with( *args ).ordered.and_call_original
   end
+
+  ##
+  # Stub this system's user.
+  before { subject.stub :user => 'jeremyruppel' }
 
   ##
   # Silence the middleware shell during test runs.

@@ -8,11 +8,9 @@ describe Git::Deploy::Middleware::Hipchat, :middleware => true do
   it { should be_a( Git::Deploy::Middleware ) }
 
   it 'performs the correct steps in order' do
-    step subject, :`,   'git config user.email'
-    step subject, :`,   'hipchat say jeremy.ruppel@gmail.com\ is\ deploying\ develop\ to\ staging --color yellow'
+    step subject, :`,   "hipchat say 'jeremyruppel is deploying develop to staging' --color yellow"
     step app,     :call, env
-    step subject, :`,   'git config user.email'
-    step subject, :`,   'hipchat say jeremy.ruppel@gmail.com\ successfully\ deployed\ develop\ to\ staging --color green'
+    step subject, :`,   "hipchat say 'jeremyruppel successfully deployed develop to staging' --color green"
 
     subject.call env
   end

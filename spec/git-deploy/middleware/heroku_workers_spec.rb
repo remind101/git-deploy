@@ -9,9 +9,9 @@ describe Git::Deploy::Middleware::HerokuWorkers, :middleware => true do
 
   it 'performs the correct steps in order' do
     step subject, :`,   'heroku ps --remote staging'
-    step subject, :`,   'heroku ps:scale worker\=0 --remote staging'
+    step subject, :`,   'heroku ps:scale worker=0 --remote staging'
     step app,     :call, env
-    step subject, :`,   'heroku ps:scale worker\=1 --remote staging'
+    step subject, :`,   'heroku ps:scale worker=1 --remote staging'
 
     subject.call env
   end

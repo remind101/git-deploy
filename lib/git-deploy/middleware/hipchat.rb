@@ -4,24 +4,22 @@ class Git::Deploy::Middleware::Hipchat
   def call( env )
     remote, refspec = env
 
-    sh 'hipchat', 'say', "#{user} is deploying #{refspec.name} to #{remote.name}",
-      :color => 'yellow'
+    `hipchat say '#{user} is deploying #{refspec} to #{remote}' --color yellow`
 
     env = app.call env
 
-    sh 'hipchat', 'say', "#{user} successfully deployed #{refspec.name} to #{remote.name}",
-      :color => 'green'
+    `hipchat say '#{user} successfully deployed #{refspec} to #{remote}' --color green`
 
     env
-
   rescue Interrupt => e
-    sh 'hipchat', 'say', "#{user} interrupted the deploy",
-      :color => 'red'
+    `hipchat say '#{user} interrupted the deploy' --color red`
 
     raise
   end
 
+  # TODO make this available to all middleware
+  # TODO use something like `git config user.email` instead
   def user
-    `git config user.email`.chomp
+    ENV[ 'USER' ]
   end
 end

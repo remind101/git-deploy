@@ -7,7 +7,7 @@ class Git::Deploy::Middleware::Migrate
     remote, refspec = app.call env
 
     if remote.heroku? && options.migrate?
-      sh 'heroku', 'run', 'rake' 'db:migrate', :remote => remote.name
+      `heroku run rake db:migrate --remote #{remote}`
     end
 
     [ remote, refspec ]
