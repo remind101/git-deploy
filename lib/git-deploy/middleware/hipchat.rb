@@ -13,6 +13,11 @@ class Git::Deploy::Middleware::Hipchat
       hipchat_flags.merge( :color => 'green' )
 
     env
+
+  rescue Interrupt => e
+    sh 'hipchat', 'say', 'Deployment interrupted',
+      hipchat_flags.merge( :color => 'red' )
+    raise
   end
 
   def hipchat_flags

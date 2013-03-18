@@ -4,41 +4,42 @@ module Git
   module Deploy
     class CLI < Thor
 
-      ##
-      # Defines a new thor command for deployment to the specified remote.
-      def self.define_remote_command( remote )
+      Git::Deploy.git.remotes.each do |remote|
 
-        # Describe the command
+        ##
+        # Defines a new thor command for deployment to the specified remote.
         desc "#{remote} [<refspec>]", "Deploy <refspec> to #{remote}"
-        # Add the --confirm option
-        method_option :confirm,
-          :type => :boolean,
-          :desc => 'Prompt the user to confirm the deploy'
-        # Define the method
-        define_method remote do |refspec='HEAD'|
+
+        method_option :confirm, :type => :boolean
+
+        define_method remote.name do |refspec='HEAD'|
           if options.confirm? && !yes?( "Really deploy #{refspec} to #{remote}?" )
             raise Git::Deploy::Interrupt
           end
-          runner.deploy remote, refspec
+
+          runner.call [ remote, git.object( refspec ) ]
         end
       end
 
-      Git::Deploy.git.remotes.each do |remote|
-        define_remote_command remote.name
+      ##
+      # Prints the current middleware stack.
+      desc 'stack', 'Prints the current middleware stack'
+      def stack
+        print_table runner.send( :stack ).unshift( %w| Class Args | )
       end
 
       no_tasks do
 
         ##
-        #
-        # TODO this needs to be in an instance method. Is there a generic
-        # handler for thor commands.
-        # trap( 'INT' ){ runner.interrupt! }
-
-        ##
-        #
+        # The deploy middleware runner instance.
         def runner
           @runner ||= Git::Deploy::Runner.new
+        end
+
+        ##
+        # The shared git instance.
+        def git
+          Git::Deploy.git
         end
       end
 

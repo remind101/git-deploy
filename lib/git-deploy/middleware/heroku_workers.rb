@@ -12,5 +12,10 @@ class Git::Deploy::Middleware::HerokuWorkers
     sh 'heroku', 'ps:scale', "worker=#{@workers}", :remote => 'staging'
 
     env
+
+  rescue Interrupt => e
+    sh 'heroku', 'ps:scale', "worker=#{@workers}", :remote => 'staging'
+
+    raise
   end
 end

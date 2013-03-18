@@ -11,5 +11,8 @@ class Git::Deploy::Middleware::HerokuMaintenance
     sh 'heroku', 'maintenance:off', :remote => 'staging'
 
     env
+  rescue Interrupt => e
+    sh 'heroku', 'maintenance:off', :remote => 'staging'
+    raise
   end
 end
