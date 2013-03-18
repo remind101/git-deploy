@@ -33,6 +33,14 @@ module Git
       end
 
       ##
+      # Turn any rescued interrupt exceptions into Thor::Error's
+      def call( *args )
+        super
+      rescue Interrupt => e
+        raise Thor::Error, e.message
+      end
+
+      ##
       # Make the middleware stack public so the CLI can see it.
       public :stack
     end

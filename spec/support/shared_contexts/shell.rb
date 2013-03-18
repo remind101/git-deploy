@@ -20,8 +20,6 @@ module DVR
   end
 end
 
-##
-# Redefine Kernel#` to call to DVR instead.
-Kernel.class_eval do
+Git::Deploy::Middleware.class_eval do
   define_method( :` ){ |command| DVR[ command ] }
 end

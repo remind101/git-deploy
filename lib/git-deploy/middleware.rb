@@ -1,4 +1,5 @@
 require 'thor'
+require 'git'
 
 class Git::Remote
 
@@ -7,6 +8,12 @@ class Git::Remote
   def heroku?
     /^git@heroku\.com:/ =~ url
   end
+
+  def to_s; name; end
+end
+
+class Git::Object::Commit
+  def to_s; name; end
 end
 
 module Git
