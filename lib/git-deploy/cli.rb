@@ -15,7 +15,13 @@ module Git
 
         desc "#{remote} [<refspec>]", "Deploy <refspec> to #{remote}"
 
-        method_option :confirm, :type => :boolean, :default => false
+        # TODO there should be some way to make the middlewares
+        # themselves install these options.
+        method_option :confirm, :type => :boolean, :default => false,
+          :desc => 'Ask the user to confirm the deployment'
+
+        method_option :migrate, :type => :boolean, :default => false,
+          :desc => 'Run pending migrations as part of the deployment'
 
         define_method remote.name do |refspec='HEAD'|
           runner.call [ remote, GIT.object( refspec ) ]
