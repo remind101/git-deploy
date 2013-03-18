@@ -1,6 +1,6 @@
 ---
 :command: heroku maintenance:off --remote staging
-:output: ! 'Disabling maintenance mode for [FILTERED]... done
+:output: ! 'Disabling maintenance mode for staging... done
 
 '
 :exitstatus: 0
