@@ -2,9 +2,6 @@ require 'git-deploy/version'
 require 'thor'
 require 'git'
 
-# I18n.load_path.concat \
-#   Dir[ File.expand_path( '../../config/locales/*.yml', __FILE__ ) ]
-
 module Git
   module Deploy
     autoload :CLI,        'git-deploy/cli'
