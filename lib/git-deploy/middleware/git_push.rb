@@ -14,3 +14,7 @@ class Git::Deploy::Middleware::GitPush
     raise
   end
 end
+
+Git::Deploy.configure do |config|
+  config.use Git::Deploy::Middleware::GitPush
+end

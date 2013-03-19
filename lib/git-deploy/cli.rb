@@ -1,34 +1,21 @@
 require 'thor'
-require 'git'
 
 module Git
   module Deploy
     class CLI < Thor
 
-      ##
-      # Create a new git client.
-      GIT = Git.open Dir.pwd
+      # TODO default_task :push
 
       ##
-      # Define a new thor command for deploying to each remote.
-      GIT.remotes.each do |remote|
-
-        desc "#{remote} [<refspec>]", "Deploy <refspec> to #{remote}"
-
-        # TODO there should be some way to make the middlewares
-        # themselves install these options.
-        method_option :confirm, :type => :boolean, :default => false,
-          :desc => 'Ask the user to confirm the deployment'
-
-        method_option :migrate, :type => :boolean, :default => false,
-          :desc => 'Run pending migrations as part of the deployment'
-
-        # TODO a --no-hipchat option
-
-        define_method remote.name do |refspec='HEAD'|
-          runner.call [ remote, GIT.object( refspec ) ]
-        end
+      # Run the current middleware stack around a push.
+      desc 'push [<repository> [<refspec>...]]', 'Run the current middleware stack around a push'
+      def push( remote=git.current_remote, branch=git.current_branch )
+        runner.call [ git.remote( remote ), git.object( branch ) ]
       end
+
+      # print_table git.targets.map { |branch, remote|
+      #   [ ('*' if branch.current), branch, '=>', remote, remote.url ]
+      # }
 
       ##
       # Prints the current middleware stack.
@@ -44,8 +31,11 @@ module Git
         def runner
           @runner ||= Git::Deploy::Runner.new options
         end
-      end
 
+        def git
+          Git::Deploy.git
+        end
+      end
     end
   end
 end
