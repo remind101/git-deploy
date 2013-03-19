@@ -2,19 +2,13 @@ class Git::Deploy::Middleware::GitPush
   include Git::Deploy::Middleware
 
   ##
-  # Deploys [refspec] to [remote]. Pretty much the most important thing.
+  # Deploys [branch] to [remote]. Pretty much the most important thing.
   def call( env )
-    remote, refspec = env
+    remote, branch = env
 
     # TODO force push
-    `git push #{remote.name} #{refspec.name} --dry-run --quiet`
+    `git push #{remote} #{branch} --dry-run --quiet`
 
-    app.call env
-  rescue Interrupt => e
-    raise
+    app.call [ remote, branch ]
   end
-end
-
-Git::Deploy.configure do |config|
-  config.use Git::Deploy::Middleware::GitPush
 end

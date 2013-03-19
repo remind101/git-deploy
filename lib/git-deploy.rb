@@ -36,6 +36,10 @@ module Git
       /^git@heroku\.com:/ =~ url
     end
 
+    def exists?
+      name && url
+    end
+
     def to_s; name; end
   end
 end
