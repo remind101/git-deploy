@@ -7,9 +7,9 @@ class Git::Deploy::Middleware::Confirm
   ##
   # Asks the user to confirm the deployment before proceeding.
   def call( env )
-    remote, refspec = env
+    remote, branch = env
 
-    if options.confirm? && !yes?( "Deploy #{refspec} to #{remote}?" )
+    if options.confirm? && !yes?( "Deploy #{branch} to #{remote}?" )
       raise Thor::Error, 'User cancelled the deployment.'
     end
 

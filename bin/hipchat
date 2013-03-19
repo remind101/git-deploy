@@ -8,19 +8,22 @@ Dotenv.load
 
 class Hipchat < Thor
 
-  desc 'say [MESSAGE]', 'Say a thing to a room'
+  desc 'say', 'Say a thing to a room'
 
+  method_option :message,    :type => :string, :required => true
   method_option :auth_token, :default => ENV[ 'HIPCHAT_AUTH_TOKEN' ]
   method_option :room_id,    :default => 'ROBOTS ONLY'
   method_option :from,       :default => 'Deploy'
   method_option :notify,     :type => :boolean, :default => '1'
   method_option :color,      :type => :string
 
-  def say( message )
+  default_task :say
+
+  def say
     uri  = URI 'https://api.hipchat.com/v1/rooms/message'
 
     req  = Net::HTTP::Post.new uri.path
-    req.set_form_data options.merge( 'message' => message )
+    req.set_form_data options
 
     http = Net::HTTP.new uri.host, uri.port
     http.use_ssl = true

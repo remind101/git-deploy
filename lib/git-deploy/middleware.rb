@@ -36,7 +36,7 @@ module Git
       ##
       #
       def git
-        Git::Deploy::CLI::GIT
+        Git::Deploy::git
       end
 
       class << self

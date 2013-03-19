@@ -2,7 +2,7 @@ class Git::Deploy::Middleware::HerokuWorkers
   include Git::Deploy::Middleware
 
   def call( env )
-    remote, refspec = env
+    remote, branch = env
 
     if remote.heroku?
       @workers = `heroku ps --remote #{remote}`.lines.grep( /^worker\./ ).count
@@ -19,7 +19,6 @@ class Git::Deploy::Middleware::HerokuWorkers
     end
 
     env
-
   rescue Interrupt => e
     if remote.heroku? && @workers
       `heroku ps:scale worker=#{@workers} --remote #{remote}`

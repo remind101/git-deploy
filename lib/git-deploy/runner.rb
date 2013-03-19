@@ -16,13 +16,21 @@ module Git
       # hash and block.
       def initialize( options )
         super() do
-          require 'git-deploy/middleware/sanity'
           require 'git-deploy/middleware/confirm'
           require 'git-deploy/middleware/git_push'
+          require 'git-deploy/middleware/heroku_maintenance'
+          require 'git-deploy/middleware/heroku_workers'
+          require 'git-deploy/middleware/hipchat'
+          require 'git-deploy/middleware/migrate'
+          require 'git-deploy/middleware/sanity'
 
-          use Git::Deploy::Middleware::Sanity,  options
-          use Git::Deploy::Middleware::Confirm, options
-          use Git::Deploy::Middleware::GitPush, options
+          use Git::Deploy::Middleware::Sanity,            options
+          use Git::Deploy::Middleware::Confirm,           options
+          use Git::Deploy::Middleware::Hipchat,           options
+          use Git::Deploy::Middleware::HerokuMaintenance, options
+          use Git::Deploy::Middleware::HerokuWorkers,     options
+          use Git::Deploy::Middleware::Migrate,           options
+          use Git::Deploy::Middleware::GitPush,           options
         end
       end
 
