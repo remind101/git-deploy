@@ -17,7 +17,7 @@ class Git::Deploy::Middleware::HerokuMaintenance
     env
   rescue Interrupt => e
     if remote.heroku?
-      `heroku maintenance:on --remote #{remote}`
+      `heroku maintenance:off --remote #{remote}`
     end
 
     raise

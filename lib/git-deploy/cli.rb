@@ -8,9 +8,9 @@ module Git
 
       ##
       # Run the current middleware stack around a push.
-      desc 'push [<repository> [<refspec>...]]', 'Run the current middleware stack around a push'
+      desc 'push [<remote> [<branch>...]]', 'Run the current middleware stack around a push'
       def push( remote=git.current_remote, branch=git.current_branch )
-        runner.call [ git.remote( remote ), git.object( branch ) ]
+        runner.call [ git.remote( remote ), git.branch( branch ) ]
       end
 
       # print_table git.targets.map { |branch, remote|

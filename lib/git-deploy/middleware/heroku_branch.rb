@@ -6,8 +6,8 @@ class Git::Deploy::Middleware::HerokuBranch
   def call( env )
     remote, branch = env
 
-    if remote.heroku? && !branch.name.end_with?( 'master' )
-      branch.name = "#{branch.name}:master"
+    if remote.heroku? && !branch.full.end_with?( 'master' )
+      branch.full = "#{branch}:master"
     end
 
     app.call [ remote, branch ]
