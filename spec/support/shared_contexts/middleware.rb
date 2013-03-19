@@ -5,12 +5,12 @@ shared_context 'middleware', :middleware => true do
   let( :remote ){ double 'remote', :name => 'staging', :heroku? => 0, :to_s => 'staging' }
 
   ##
-  # A test double for the refspec object.
-  let( :refspec ){ double 'refspec', :name => 'develop', :to_s => 'develop' }
+  # A test double for the branch object.
+  let( :branch ){ double 'branch', :name => 'develop', :to_s => 'develop' }
 
   ##
   # The request env
-  let( :env ){ [ remote, refspec ] }
+  let( :env ){ [ remote, branch ] }
 
   ##
   # A simple app lambda.
