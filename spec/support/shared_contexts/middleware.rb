@@ -2,17 +2,18 @@ shared_context 'middleware', :middleware => true do
 
   ##
   # A test double for the remote object.
-  let( :remote ){ double 'remote',
+  let( :remote ){ double( 'remote',
     :name    => 'staging',
-    :heroku? => nil,
-    :to_s    => 'staging' }
+    :to_s    => 'staging'
+    ).as_null_object }
 
   ##
   # A test double for the branch object.
-  let( :branch ){ double 'branch',
+  let( :branch ){ double( 'branch',
     :name => 'develop',
     :full => 'develop',
-    :to_s => 'develop' }
+    :to_s => 'develop'
+    ).as_null_object }
 
   ##
   # The request env
@@ -38,11 +39,13 @@ shared_context 'middleware', :middleware => true do
 
   ##
   # Stub this system's user.
+  # TODO don't mock methods on subject under test.
   before { subject.stub :user => 'jeremy.ruppel@gmail.com' }
 
   ##
   # Add hooks for making the remote behave like a heroku remote.
-  before( :heroku => true ){ remote.stub :heroku? => 0  }
+  before                   { remote.stub :heroku? => nil }
+  before( :heroku => true ){ remote.stub :heroku? => 0   }
 
   ##
   # Silence the middleware shell during test runs.

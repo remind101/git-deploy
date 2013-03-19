@@ -14,7 +14,6 @@ describe Git::Deploy::Middleware::Sanity, :middleware => true do
     expect { subject.call( env ) }.to raise_error( Thor::Error )
   end
   it 'returns env' do
-    remote.stub :exists? => true
     subject.call( env ).should == env
   end
 end
