@@ -3,8 +3,6 @@ require 'git-deploy/middleware/heroku_maintenance'
 
 describe Git::Deploy::Middleware::HerokuMaintenance, :middleware => true do
 
-  subject { described_class.new app }
-
   it { should be_a( Git::Deploy::Middleware ) }
 
   it 'performs the correct steps in order' do

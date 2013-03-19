@@ -17,6 +17,14 @@ shared_context 'middleware', :middleware => true do
   let( :app ){ lambda { |env| env } }
 
   ##
+  # A placeholder options hash.
+  let( :options ){ { } }
+
+  ##
+  # Instantiate the middleware.
+  subject { described_class.new app, options }
+
+  ##
   # A helper method for declaring ordered method expectations.
   def step( receiver, method, *args )
     receiver.should_receive( method ).with( *args ).ordered.and_call_original

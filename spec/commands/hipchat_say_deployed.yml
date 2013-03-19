@@ -1,4 +1,4 @@
 ---
-:command: hipchat say 'jeremy.ruppel@gmail.com successfully deployed develop to staging' --color green
+:command: hipchat --message 'jeremy.ruppel@gmail.com successfully deployed develop to staging' --color green
 :output: ''
 :exitstatus: 0

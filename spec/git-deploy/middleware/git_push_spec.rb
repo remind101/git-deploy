@@ -3,12 +3,12 @@ require 'git-deploy/middleware/git_push'
 
 describe Git::Deploy::Middleware::GitPush, :middleware => true do
 
-  subject { described_class.new app }
-
   it { should be_a( Git::Deploy::Middleware ) }
 
+  before { options.stub :force? => false }
+
   it 'performs the correct steps in order' do
-    step subject, :`,   'git push staging develop --dry-run --quiet'
+    step subject, :`,   'git push staging develop'
     step app,     :call, env
 
     subject.call env
