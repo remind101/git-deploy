@@ -5,7 +5,12 @@ describe Git::Deploy::Middleware::HerokuWorkers, :middleware => true do
 
   it { should be_a( Git::Deploy::Middleware ) }
 
-  it 'performs the correct steps in order' do
+  it 'does not act on non-heroku remotes', :heroku => false do
+    step app, :call, env
+
+    subject.call env
+  end
+  it 'performs the correct steps in order', :heroku => true do
     step subject, :`,   'heroku ps --remote staging'
     step subject, :`,   'heroku ps:scale worker=0 --remote staging'
     step app,     :call, env
