@@ -6,6 +6,7 @@ module Git
 
     module Middleware
       autoload :Confirm,           'git-deploy/middleware/confirm'
+      autoload :Countdown,         'git-deploy/middleware/countdown'
       autoload :GitPush,           'git-deploy/middleware/git_push'
       autoload :HerokuBranch,      'git-deploy/middleware/heroku_branch'
       autoload :HerokuMaintenance, 'git-deploy/middleware/heroku_maintenance'
