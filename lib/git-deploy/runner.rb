@@ -51,10 +51,29 @@ module Git
         exit 1
       end
 
+      class ProgressBar
+        require 'git-deploy/utils/shell'
+
+        def initialize( app, middleware )
+          @app, @middleware = app, middleware
+        end
+
+        def call( env )
+          puts "=> #{@middleware}".yellow
+          env = @app.call env
+          puts "<= #{@middleware}".green
+          env
+        rescue Interrupt
+          puts "<= #{@middleware}".red
+          raise
+        end
+      end
+
       ##
       # Override #use to provide a callback to the class
       # in case it needs to configure any options.
       def use( middleware, *args, &block )
+        super ProgressBar, middleware
         super
 
         middleware.used( @opts ) if middleware.respond_to?( :used )
