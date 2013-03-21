@@ -1,7 +1,7 @@
 class Git::Deploy::Middleware::Confirm
 
   def self.used( opts )
-    opts.on '-c', '--confirm', 'Ask the user to confirm the deployment.'
+    opts.on :c, :confirm, 'Ask the user to confirm the deployment.'
   end
 
   def initialize( app )

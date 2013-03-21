@@ -7,6 +7,8 @@ require 'git-deploy'
 require 'slop'
 
 opts = Slop.new :help => true do
+  on :p, :progress, 'Print the progress of the deployment.'
+
   run Git::Deploy::Runner.new( self )
 end
 
