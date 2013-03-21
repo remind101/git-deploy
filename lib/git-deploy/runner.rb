@@ -19,7 +19,7 @@ module Git
 
         super do
           use Git::Deploy::Middleware::Sanity
-          use Git::Deploy::Middleware::Confirm
+          use Git::Deploy::Middleware::Countdown
           use Git::Deploy::Middleware::Hipchat,
             :auth_token => ENV[ 'HIPCHAT_AUTH_TOKEN' ],
             :room_id    => 'ROBOTS ONLY',
