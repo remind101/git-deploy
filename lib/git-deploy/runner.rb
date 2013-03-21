@@ -59,14 +59,12 @@ module Git
         end
 
         def call( env )
-          options, _ = env
-
-          puts "=> #{@middleware}".yellow if options.progress?
+          puts "=> #{@middleware}".yellow
           env = @app.call env
-          puts "<= #{@middleware}".green  if options.progress?
+          puts "<= #{@middleware}".green
           env
         rescue Interrupt
-          puts "<= #{@middleware}".red    if options.progress?
+          puts "<= #{@middleware}".red
           raise
         end
       end
