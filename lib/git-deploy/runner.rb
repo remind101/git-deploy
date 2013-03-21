@@ -14,39 +14,51 @@ module Git
       # Sets up the middleware stack for deploy runs. Every middleware gets
       # access to the thor runner's options hash, as well as its own options
       # hash and block.
-      def initialize( options )
-        super() do
-          require 'git-deploy/middleware/confirm'
-          require 'git-deploy/middleware/git_push'
-          require 'git-deploy/middleware/heroku_branch'
-          require 'git-deploy/middleware/heroku_maintenance'
-          require 'git-deploy/middleware/heroku_workers'
-          require 'git-deploy/middleware/hipchat'
-          require 'git-deploy/middleware/migrate'
-          require 'git-deploy/middleware/sanity'
+      def initialize( opts )
+        @opts = opts
 
-          use Git::Deploy::Middleware::Sanity,            options
-          use Git::Deploy::Middleware::Confirm,           options
-          use Git::Deploy::Middleware::Hipchat,           options
-          use Git::Deploy::Middleware::HerokuBranch,      options
-          use Git::Deploy::Middleware::HerokuMaintenance, options
-          use Git::Deploy::Middleware::HerokuWorkers,     options
-          use Git::Deploy::Middleware::Migrate,           options
-          use Git::Deploy::Middleware::GitPush,           options
+        super do
+          use Git::Deploy::Middleware::Sanity
+          use Git::Deploy::Middleware::Confirm
+          use Git::Deploy::Middleware::Hipchat,
+            :auth_token => ENV[ 'HIPCHAT_AUTH_TOKEN' ],
+            :room_id    => 'ROBOTS ONLY',
+            :from       => 'Deploy',
+            :notify     => 1
+
+          use Git::Deploy::Middleware::HerokuBranch
+          use Git::Deploy::Middleware::HerokuMaintenance
+          use Git::Deploy::Middleware::HerokuWorkers
+          use Git::Deploy::Middleware::Migrate
+          use Git::Deploy::Middleware::GitPush
         end
       end
 
       ##
-      # Turn any rescued interrupt exceptions into `Thor::Error`s
+      # Turn Slop's multiple arguments to #call into an array. Also,
+      # rescue errors and report them to the user appropriately.
       def call( *args )
-        super
+        super args.flatten
       rescue Interrupt => e
-        raise Thor::Error, e.message
+        puts e.message.red
+        exit 1
+      rescue ArgumentError => e
+        puts e.message
+        puts args.first # prints the usage instructions
+        exit 1
+      rescue SocketError => e
+        puts "You need to be online to deploy, bro.".red
+        exit 1
       end
 
       ##
-      # Make the middleware stack public so the CLI can see it.
-      public :stack
+      # Override #use to provide a callback to the class
+      # in case it needs to configure any options.
+      def use( middleware, *args, &block )
+        super
+
+        middleware.used( @opts ) if middleware.respond_to?( :used )
+      end
     end
   end
 end

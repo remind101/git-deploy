@@ -1,6 +1,0 @@
----
-:command: heroku maintenance:on --remote staging
-:output: ! 'Enabling maintenance mode for staging... done
-
-'
-:exitstatus: 0

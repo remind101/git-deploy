@@ -1,20 +1,20 @@
-class Git::Deploy::Middleware::GitPush
-  include Git::Deploy::Middleware
+require 'shellwords'
 
-  option :force, :type => :boolean, :default => true,
-    :desc => "I know what I'm doing"
+class Git::Deploy::Middleware::GitPush
+
+  def initialize( app )
+    @app = app
+  end
 
   ##
   # Deploys [branch] to [remote]. Pretty much the most important thing.
+  # Consumes any leftover flags from the original command.
   def call( env )
-    remote, branch = env
 
-    if options.force?
-      `git push #{remote} #{branch} --force`
-    else
-      `git push #{remote} #{branch}`
-    end
+    options, remote, branch, *args = env
 
-    app.call [ remote, branch ]
+    `git push #{[ remote, branch, *args ].shelljoin}`
+
+    @app.call env
   end
 end

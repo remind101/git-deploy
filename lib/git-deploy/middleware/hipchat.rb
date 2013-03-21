@@ -1,19 +1,47 @@
+require 'net/http'
+
 class Git::Deploy::Middleware::Hipchat
-  include Git::Deploy::Middleware
+
+  def initialize( app, config )
+    @app, @config = app, config
+  end
 
   def call( env )
-    remote, refspec = env
 
-    `hipchat --message '#{user} is deploying #{refspec} to #{remote}' --color yellow`
+    options, remote, branch, *args = env
 
-    env = app.call env
+    hipchat "#{user} is deploying #{branch} to #{remote}",
+      :color => 'yellow'
 
-    `hipchat --message '#{user} successfully deployed #{refspec} to #{remote}' --color green`
+    env = @app.call env
+
+    hipchat "#{user} successfully deployed #{branch} to #{remote}",
+      :color => 'green'
 
     env
   rescue Interrupt => e
-    `hipchat --message '#{user} interrupted the deploy' --color red`
+    hipchat "#{user} interrupted the deploy of #{branch} to #{remote}",
+      :color => 'red'
 
     raise
+  end
+
+  def user
+    `git config user.email`.chomp
+  end
+
+  def hipchat( message, options={} )
+    options.merge! @config
+    options.merge! :message => message
+
+    uri  = URI 'https://api.hipchat.com/v1/rooms/message'
+
+    req  = Net::HTTP::Post.new uri.path
+    req.set_form_data options
+
+    http = Net::HTTP.new uri.host, uri.port
+    http.use_ssl = true
+
+    http.request req
   end
 end

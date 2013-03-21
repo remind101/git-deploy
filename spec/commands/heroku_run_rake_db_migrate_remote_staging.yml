@@ -1,6 +1,0 @@
----
-:command: heroku run rake db:migrate --remote staging
-:output: ! 'Running `rake db:migrate` attached to terminal... up, run.2270
-
-'
-:exitstatus: 0

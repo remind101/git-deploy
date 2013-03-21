@@ -1,18 +1,27 @@
 class Git::Deploy::Middleware::Migrate
-  include Git::Deploy::Middleware
 
-  option :migrate, :type => :boolean, :default => false,
-    :desc => 'Run migrations after deployment'
+  def self.used( opts )
+    opts.on :m, :migrate, 'Run migrations after deployment'
+  end
+
+  def initialize( app )
+    @app = app
+  end
 
   ##
   # Runs pending migrations if the migrate option was given.
   def call( env )
-    remote, branch = app.call env
 
-    if remote.heroku? && options.migrate?
+    options, remote, branch, *args = @app.call env
+
+    if options.migrate? && heroku?( remote )
       `heroku run rake db:migrate --remote #{remote}`
     end
 
-    [ remote, branch ]
+    env
+  end
+
+  def heroku?( remote )
+    `git config remote.#{remote}.url` =~ /^git@heroku\.com:/
   end
 end

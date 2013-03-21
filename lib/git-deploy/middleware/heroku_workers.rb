@@ -1,29 +1,37 @@
 class Git::Deploy::Middleware::HerokuWorkers
-  include Git::Deploy::Middleware
+
+  def initialize( app )
+    @app = app
+  end
 
   def call( env )
-    remote, branch = env
 
-    if remote.heroku?
-      @workers = `heroku ps --remote #{remote}`.lines.grep( /^worker\./ ).count
+    options, remote, branch, *args = env
+
+    if heroku?( remote )
+      @workers = Git::Deploy::Heroku.new( remote ).ps[ :worker ]
     end
 
-    if remote.heroku?
-      `heroku ps:scale worker=0 --remote #{remote}`
+    if heroku?( remote )
+      Git::Deploy::Heroku.new( remote ).ps_scale :worker => 0
     end
 
-    env = app.call env
+    env = @app.call env
 
-    if remote.heroku? && @workers
-      `heroku ps:scale worker=#{@workers} --remote #{remote}`
+    if heroku?( remote ) && @workers
+      Git::Deploy::Heroku.new( remote ).ps_scale :worker => @workers
     end
 
     env
   rescue Interrupt => e
-    if remote.heroku? && @workers
-      `heroku ps:scale worker=#{@workers} --remote #{remote}`
+    if heroku?( remote ) && @workers
+      Git::Deploy::Heroku.new( remote ).ps_scale :worker => @workers
     end
 
     raise
+  end
+
+  def heroku?( remote )
+    `git config remote.#{remote}.url` =~ /^git@heroku\.com:/
   end
 end

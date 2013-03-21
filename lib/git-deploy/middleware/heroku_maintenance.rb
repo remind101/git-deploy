@@ -1,25 +1,33 @@
 class Git::Deploy::Middleware::HerokuMaintenance
-  include Git::Deploy::Middleware
+
+  def initialize( app )
+    @app = app
+  end
 
   def call( env )
-    remote, branch = env
 
-    if remote.heroku?
-      `heroku maintenance:on --remote #{remote}`
+    options, remote, branch, *args = env
+
+    if heroku?( remote )
+      Git::Deploy::Heroku.new( remote ).maintenance_on
     end
 
-    env = app.call [ remote, branch ]
+    env = @app.call env
 
-    if remote.heroku?
-      `heroku maintenance:off --remote #{remote}`
+    if heroku?( remote )
+      Git::Deploy::Heroku.new( remote ).maintenance_off
     end
 
     env
   rescue Interrupt => e
-    if remote.heroku?
-      `heroku maintenance:off --remote #{remote}`
+    if heroku?( remote )
+      Git::Deploy::Heroku.new( remote ).maintenance_off
     end
 
     raise
+  end
+
+  def heroku?( remote )
+    `git config remote.#{remote}.url` =~ /^git@heroku\.com:/
   end
 end

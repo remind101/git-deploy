@@ -1,19 +1,24 @@
 require 'spec_helper'
-require 'git-deploy/middleware/heroku_branch'
 
 describe Git::Deploy::Middleware::HerokuBranch, :middleware => true do
 
-  it { should be_a( Git::Deploy::Middleware ) }
+  subject { described_class.new app }
 
-  it 'does not alter the destination branch', :heroku => false do
-    branch.should_not_receive( :full= )
-    subject.call( env )
+  on_heroku do
+    it 'targets the push to the master branch of the heroku remote' do
+      expect { subject.call( env ) }.to change { branch }.to( 'master:master' )
+    end
+    it 'returns env' do
+      subject.call( env ).should == env
+    end
   end
-  it 'sets the destination branch to `master`', :heroku => true do
-    branch.should_receive( :full= ).with( 'develop:master' )
-    subject.call( env )
-  end
-  it 'returns env' do
-    subject.call( env ).should == env
+
+  off_heroku do
+    it 'does not alter the destination branch' do
+      expect { subject.call( env ) }.not_to change { branch }
+    end
+    it 'returns env' do
+      subject.call( env ).should == env
+    end
   end
 end

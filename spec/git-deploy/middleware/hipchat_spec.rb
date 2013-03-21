@@ -3,16 +3,17 @@ require 'git-deploy/middleware/hipchat'
 
 describe Git::Deploy::Middleware::Hipchat, :middleware => true do
 
-  it { should be_a( Git::Deploy::Middleware ) }
+  subject { described_class.new app, { } }
 
   it 'performs the correct steps in order' do
-    step subject, :`,   "hipchat --message 'jeremy.ruppel@gmail.com is deploying develop to staging' --color yellow"
-    step app,     :call, env
-    step subject, :`,   "hipchat --message 'jeremy.ruppel@gmail.com successfully deployed develop to staging' --color green"
+    subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com is deploying master to production', :color => 'yellow' ).ordered
+        app.should_receive( :call ).with( env )
+    subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com successfully deployed master to production', :color => 'green' ).ordered
 
     subject.call env
   end
   it 'returns env' do
+    subject.stub :hipchat => true # FIXME bad testing. need to create another object for this
     subject.call( env ).should == env
   end
 end

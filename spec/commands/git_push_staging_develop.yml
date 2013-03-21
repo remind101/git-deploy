@@ -1,4 +1,0 @@
----
-:command: git push staging develop
-:output: ''
-:exitstatus: 0

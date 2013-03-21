@@ -1,18 +1,25 @@
 class Git::Deploy::Middleware::Confirm
-  include Git::Deploy::Middleware
 
-  option :confirm, :type => :boolean, :default => false,
-    :desc => 'Ask the user to confirm the deployment'
+  def self.used( opts )
+    opts.on '-c', '--confirm', 'Ask the user to confirm the deployment.'
+  end
+
+  def initialize( app )
+    @app = app
+  end
+
+  include Git::Deploy::Shell
 
   ##
   # Asks the user to confirm the deployment before proceeding.
   def call( env )
-    remote, branch = env
 
-    if options.confirm? && !yes?( "Deploy #{branch} to #{remote}?" )
-      raise Thor::Error, 'User cancelled the deployment.'
+    options, remote, branch = env
+
+    if options.confirm? && !agree( "Deploy #{branch} to #{remote}?" )
+      raise Interrupt, 'Use cancelled the deployment.'
     end
 
-    app.call env
+    @app.call env
   end
 end

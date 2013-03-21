@@ -1,4 +1,13 @@
 #!/usr/bin/env ruby -KU
 
+# FIXME remove this
+$:.unshift File.expand_path( '../../lib', __FILE__ )
+
 require 'git-deploy'
-Git::Deploy::CLI.start
+require 'slop'
+
+opts = Slop.new :help => true do
+  run Git::Deploy::Runner.new( self )
+end
+
+opts.parse!

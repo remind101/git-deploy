@@ -1,53 +1,50 @@
 shared_context 'middleware', :middleware => true do
 
   ##
-  # A test double for the remote object.
-  let( :remote ){ double( 'remote',
-    :name    => 'staging',
-    :to_s    => 'staging'
-    ).as_null_object }
+  # A test double for the options. Explicitly stub your options under test
+  # on this object.
+  let( :options ){ double( 'options' ).as_null_object }
 
   ##
-  # A test double for the branch object.
-  let( :branch ){ double( 'branch',
-    :name => 'develop',
-    :full => 'develop',
-    :to_s => 'develop'
-    ).as_null_object }
+  # The remote name.
+  let( :remote ){ 'production' }
 
   ##
-  # The request env
-  let( :env ){ [ remote, branch ] }
+  # The branch name.
+  let( :branch ){ 'master' }
 
   ##
-  # A simple app lambda.
+  # The env array.
+  let( :env ){ [ options, remote, branch ] }
+
+  ##
+  # An app to hand to your middleware. Does absolutely nothing.
   let( :app ){ lambda { |env| env } }
-
-  ##
-  # A placeholder options hash.
-  let( :options ){ { } }
-
-  ##
-  # Instantiate the middleware.
-  subject { described_class.new app, options }
 
   ##
   # A helper method for declaring ordered method expectations.
   def step( receiver, method, *args )
     receiver.should_receive( method ).with( *args ).ordered.and_call_original
   end
+end
 
-  ##
-  # Stub this system's user.
-  # TODO don't mock methods on subject under test.
-  before { subject.stub :user => 'jeremy.ruppel@gmail.com' }
+module HerokuContexts
 
-  ##
-  # Add hooks for making the remote behave like a heroku remote.
-  before                   { remote.stub :heroku? => nil }
-  before( :heroku => true ){ remote.stub :heroku? => 0   }
+  def on_heroku( &block )
+    context 'when the remote is a heroku app' do
+      before { subject.stub :heroku? => true }
+      instance_exec &block
+    end
+  end
 
-  ##
-  # Silence the middleware shell during test runs.
-  around { |example| subject.shell.mute { example.run } }
+  def off_heroku( &block )
+    context 'when the remote is not a heroku app' do
+      before { subject.stub :heroku? => false }
+      instance_exec &block
+    end
+  end
+end
+
+RSpec.configure do |c|
+  c.extend HerokuContexts, :middleware => true
 end

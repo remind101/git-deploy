@@ -1,23 +1,34 @@
 require 'spec_helper'
-require 'git-deploy/middleware/heroku_maintenance'
 
 describe Git::Deploy::Middleware::HerokuMaintenance, :middleware => true do
 
-  it { should be_a( Git::Deploy::Middleware ) }
+  subject { described_class.new app }
 
-  it 'does not act on non-heroku remotes', :heroku => false do
-    step app, :call, env
+  let( :heroku ){ double( 'Heroku' ).as_null_object }
 
-    subject.call env
+  before { Git::Deploy::Heroku.stub :new => heroku }
+
+  on_heroku do
+    it 'performs the correct steps in order' do
+      heroku.should_receive( :maintenance_on ).ordered
+         app.should_receive( :call ).with( env ).ordered.and_call_original
+      heroku.should_receive( :maintenance_off ).ordered
+
+      subject.call env
+    end
+    it 'returns env' do
+      subject.call( env ).should == env
+    end
   end
-  it 'performs the correct steps in order', :heroku => true do
-    step subject, :`,   'heroku maintenance:on --remote staging'
-    step app,     :call, env
-    step subject, :`,   'heroku maintenance:off --remote staging'
 
-    subject.call env
-  end
-  it 'returns env' do
-    subject.call( env ).should == env
+  off_heroku do
+    it 'performs the correct steps in order' do
+      app.should_receive( :call ).with( env ).ordered.and_call_original
+
+      subject.call env
+    end
+    it 'returns env' do
+      subject.call( env ).should == env
+    end
   end
 end
