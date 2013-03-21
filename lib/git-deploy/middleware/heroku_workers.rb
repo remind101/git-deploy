@@ -9,23 +9,23 @@ class Git::Deploy::Middleware::HerokuWorkers
     options, remote, branch, *args = env
 
     if heroku?( remote )
-      @workers = Git::Deploy::Heroku.new( remote ).ps[ :worker ]
+      @workers = Git::Deploy::Utils::Heroku.new( remote ).ps[ :worker ]
     end
 
     if heroku?( remote )
-      Git::Deploy::Heroku.new( remote ).ps_scale :worker => 0
+      Git::Deploy::Utils::Heroku.new( remote ).ps_scale :worker => 0
     end
 
     env = @app.call env
 
     if heroku?( remote ) && @workers
-      Git::Deploy::Heroku.new( remote ).ps_scale :worker => @workers
+      Git::Deploy::Utils::Heroku.new( remote ).ps_scale :worker => @workers
     end
 
     env
   rescue Interrupt => e
     if heroku?( remote ) && @workers
-      Git::Deploy::Heroku.new( remote ).ps_scale :worker => @workers
+      Git::Deploy::Utils::Heroku.new( remote ).ps_scale :worker => @workers
     end
 
     raise

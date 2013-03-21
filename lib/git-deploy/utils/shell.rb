@@ -3,21 +3,16 @@ require 'forwardable'
 
 module Git
   module Deploy
-    module Shell
-      extend Forwardable
-
-      ##
-      # A new HighLine instance.
-      def shell
-        @shell ||= HighLine.new
+    module Utils
+      class Shell < HighLine
       end
-      def_delegators :shell, :agree, :say
     end
   end
 end
 
 ##
-# Core extensions for coloring strings
+# Core extensions for coloring strings.
+# TODO move this somewhere else?
 class String
 
   HighLine::COLORS.map(&:downcase).each do |color|

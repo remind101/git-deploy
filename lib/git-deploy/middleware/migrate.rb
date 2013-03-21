@@ -15,7 +15,7 @@ class Git::Deploy::Middleware::Migrate
     options, remote, branch, *args = @app.call env
 
     if options.migrate? && heroku?( remote )
-      Git::Deploy::Heroku.new( remote ).run 'rake db:migrate'
+      Git::Deploy::Utils::Heroku.new( remote ).run 'rake db:migrate'
     end
 
     env

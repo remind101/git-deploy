@@ -6,7 +6,7 @@ describe Git::Deploy::Middleware::GitPush, :middleware => true do
 
   let( :git ){ double( 'Git' ).as_null_object }
 
-  before { Git::Deploy::Remote.stub :new => git }
+  before { Git::Deploy::Utils::Remote.stub :new => git }
 
   it 'performs the correct steps in order' do
     git.should_receive( :push ).ordered

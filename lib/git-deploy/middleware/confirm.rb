@@ -8,15 +8,15 @@ class Git::Deploy::Middleware::Confirm
     @app = app
   end
 
-  include Git::Deploy::Shell
-
   ##
   # Asks the user to confirm the deployment before proceeding.
   def call( env )
 
     options, remote, branch = env
 
-    if options.confirm? && !agree( "Deploy #{branch} to #{remote}?" )
+    shell = Git::Deploy::Utils::Shell.new
+
+    if options.confirm? && !shell.agree( "Deploy #{branch} to #{remote}?" )
       raise Interrupt, 'Use cancelled the deployment.'
     end
 

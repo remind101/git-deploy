@@ -9,19 +9,19 @@ class Git::Deploy::Middleware::HerokuMaintenance
     options, remote, branch, *args = env
 
     if heroku?( remote )
-      Git::Deploy::Heroku.new( remote ).maintenance_on
+      Git::Deploy::Utils::Heroku.new( remote ).maintenance_on
     end
 
     env = @app.call env
 
     if heroku?( remote )
-      Git::Deploy::Heroku.new( remote ).maintenance_off
+      Git::Deploy::Utils::Heroku.new( remote ).maintenance_off
     end
 
     env
   rescue Interrupt => e
     if heroku?( remote )
-      Git::Deploy::Heroku.new( remote ).maintenance_off
+      Git::Deploy::Utils::Heroku.new( remote ).maintenance_off
     end
 
     raise

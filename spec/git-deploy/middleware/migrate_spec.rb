@@ -6,7 +6,7 @@ describe Git::Deploy::Middleware::Migrate, :middleware => true do
 
   let( :heroku ){ double( 'Heroku' ).as_null_object }
 
-  before { Git::Deploy::Heroku.stub :new => heroku }
+  before { Git::Deploy::Utils::Heroku.stub :new => heroku }
 
   on_heroku do
     it 'runs migrations when the option is specified' do

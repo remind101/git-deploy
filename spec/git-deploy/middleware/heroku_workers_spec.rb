@@ -6,7 +6,7 @@ describe Git::Deploy::Middleware::HerokuWorkers, :middleware => true do
 
   let( :heroku ){ double( 'Heroku' ).as_null_object }
 
-  before { Git::Deploy::Heroku.stub :new => heroku }
+  before { Git::Deploy::Utils::Heroku.stub :new => heroku }
 
   on_heroku do
     it 'performs the correct steps in order' do
