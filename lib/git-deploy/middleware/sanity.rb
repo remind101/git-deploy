@@ -13,7 +13,7 @@ class Git::Deploy::Middleware::Sanity
     remote ||= git.current_remote
     branch ||= git.current_branch
 
-    raise ArgumentError, 'No remote provided.' if !remote
+    raise ArgumentError, 'No remote provided.' if remote.empty?
 
     @app.call [ options, remote, branch, *args ]
   end

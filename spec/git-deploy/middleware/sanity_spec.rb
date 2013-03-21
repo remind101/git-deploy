@@ -11,7 +11,7 @@ describe Git::Deploy::Middleware::Sanity, :middleware => true do
   context 'when the remote is blank' do
     let( :remote ){ nil }
 
-    before { git.stub :current_remote => nil }
+    before { git.stub :current_remote => '' }
 
     it 'raises an error' do
       expect { subject.call( env ) }.to raise_error( ArgumentError )
