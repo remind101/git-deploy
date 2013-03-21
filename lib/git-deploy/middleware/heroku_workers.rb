@@ -9,7 +9,6 @@ class Git::Deploy::Middleware::HerokuWorkers
     remote = Git::Deploy::Utils::Remote.new env
     heroku = Git::Deploy::Utils::Heroku.new env
 
-    # FIXME this should be heroku.ps[ :worker ].count
     @workers = heroku.ps[ :worker ] if remote.heroku?
 
     heroku.ps_scale( :worker => 0 ) if remote.heroku? && @workers

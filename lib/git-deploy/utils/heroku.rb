@@ -24,8 +24,8 @@ module Git
         # keyed on process type.
         def ps
           output = Shell[ "heroku ps --remote #{@remote}" ]
-          output.lines.reduce( Hash.new { |h, k| h[k] = [ ] } ) do |hsh, line|
-            hsh[ $1.to_sym ] << line.chomp if line =~ /^(\w+)\.\d/
+          output.lines.reduce( Hash.new( 0 ) ) do |hsh, line|
+            hsh[ $1.to_sym ] += 1 if line =~ /^(\w+)\.\d/
             hsh
           end
         end

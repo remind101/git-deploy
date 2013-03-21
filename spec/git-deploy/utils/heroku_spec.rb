@@ -34,15 +34,7 @@ worker.1: up 2013/03/21 07:30:16 (~ 4h ago)
 
 EOS
       }
-      subject.ps.should == {
-        :web => [
-          'web.1: up 2013/03/21 07:30:43 (~ 4h ago)',
-          'web.2: up 2013/03/21 07:30:43 (~ 4h ago)'
-        ],
-        :worker => [
-          'worker.1: up 2013/03/21 07:30:16 (~ 4h ago)'
-        ]
-      }
+      subject.ps.should == { :web => 2, :worker => 1 }
     end
   end
 
