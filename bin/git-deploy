@@ -1,8 +1,5 @@
 #!/usr/bin/env ruby -KU
 
-# FIXME remove this
-$:.unshift File.expand_path( '../../lib', __FILE__ )
-
 require 'git-deploy'
 require 'slop'
 
