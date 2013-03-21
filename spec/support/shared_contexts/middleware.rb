@@ -20,12 +20,6 @@ shared_context 'middleware', :middleware => true do
   ##
   # An app to hand to your middleware. Does absolutely nothing.
   let( :app ){ lambda { |env| env } }
-
-  ##
-  # A helper method for declaring ordered method expectations.
-  def step( receiver, method, *args )
-    receiver.should_receive( method ).with( *args ).ordered.and_call_original
-  end
 end
 
 module HerokuContexts

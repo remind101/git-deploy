@@ -1,18 +1,18 @@
 require 'spec_helper'
-require 'git-deploy/middleware/sanity'
 
 describe Git::Deploy::Middleware::Sanity, :middleware => true do
 
-  it { should be_a( Git::Deploy::Middleware ) }
+  subject { described_class.new app }
 
-  it 'raises an exception when the remote is left blank' do
-    remote.stub :name => nil
-    expect { subject.call( env ) }.to raise_error( Thor::Error )
+  context 'when the remote is blank' do
+    let( :remote ){ nil }
+    before { subject.stub :current_remote => nil } # FIXME bad collaboration, object has too much responsibility
+
+    it 'raises an error' do
+      expect { subject.call( env ) }.to raise_error( ArgumentError )
+    end
   end
-  it 'raises an exception when the remote does not exist' do
-    remote.stub :exists? => false
-    expect { subject.call( env ) }.to raise_error( Thor::Error )
-  end
+
   it 'returns env' do
     subject.call( env ).should == env
   end

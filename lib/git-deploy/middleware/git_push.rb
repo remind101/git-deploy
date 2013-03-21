@@ -1,5 +1,3 @@
-require 'shellwords'
-
 class Git::Deploy::Middleware::GitPush
 
   def initialize( app )
@@ -13,7 +11,7 @@ class Git::Deploy::Middleware::GitPush
 
     options, remote, branch, *args = env
 
-    `git push #{[ remote, branch, *args ].shelljoin}`
+    Git::Deploy::Remote.new( env ).push
 
     @app.call env
   end

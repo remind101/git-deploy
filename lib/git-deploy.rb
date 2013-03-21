@@ -3,9 +3,10 @@ require 'git-deploy/git'
 
 module Git
   module Deploy
+    autoload :Heroku,               'git-deploy/heroku'
+    autoload :Remote,               'git-deploy/remote'
     autoload :Runner,               'git-deploy/runner'
     autoload :Shell,                'git-deploy/shell'
-    autoload :Heroku,               'git-deploy/heroku'
 
     module Middleware
        autoload :Sanity,            'git-deploy/middleware/sanity'

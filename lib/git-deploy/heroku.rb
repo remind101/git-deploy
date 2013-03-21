@@ -27,6 +27,10 @@ module Git
         `heroku ps:scale #{spec} --remote #{@remote}`
       end
 
+      def run( command )
+        `heroku run #{command} --remote #{@remote}`
+      end
+
     end
   end
 end
