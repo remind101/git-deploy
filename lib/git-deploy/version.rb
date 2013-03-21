@@ -1,5 +1,5 @@
 module Git
   module Deploy
-    VERSION = '0.6.1'
+    VERSION = '0.7.0'
   end
 end
