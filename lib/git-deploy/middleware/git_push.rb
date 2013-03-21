@@ -11,7 +11,7 @@ class Git::Deploy::Middleware::GitPush
 
     options, remote, branch, *args = env
 
-    Git::Deploy::Utils::Remote.new( env ).push
+    Git::Deploy::Utils::Git.new( env ).push
 
     @app.call env
   end

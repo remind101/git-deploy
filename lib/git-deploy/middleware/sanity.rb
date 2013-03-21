@@ -4,14 +4,14 @@ class Git::Deploy::Middleware::Sanity
     @app = app
   end
 
-  include Git::Deploy
-
   def call( env )
 
     options, remote, branch, *args = env
 
-    remote ||= current_remote
-    branch ||= current_branch
+    git = Git::Deploy::Utils::Git.new env
+
+    remote ||= git.current_remote
+    branch ||= git.current_branch
 
     raise ArgumentError, 'No remote provided.' if !remote
 

@@ -4,9 +4,14 @@ describe Git::Deploy::Middleware::Sanity, :middleware => true do
 
   subject { described_class.new app }
 
+  let( :git ){ double( 'Git' ).as_null_object }
+
+  before { Git::Deploy::Utils::Git.stub :new => git }
+
   context 'when the remote is blank' do
     let( :remote ){ nil }
-    before { subject.stub :current_remote => nil } # FIXME bad collaboration, object has too much responsibility
+
+    before { git.stub :current_remote => nil }
 
     it 'raises an error' do
       expect { subject.call( env ) }.to raise_error( ArgumentError )

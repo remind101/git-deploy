@@ -19,7 +19,6 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'slop',          '~> 3.4.4'
   gem.add_dependency 'middleware',    '~> 0.1.0'
-  gem.add_dependency 'git',           '~> 1.2.5'
   gem.add_dependency 'dotenv',        '~> 0.5.0'
   gem.add_dependency 'highline',      '~> 1.6.16'
 
