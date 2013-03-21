@@ -12,16 +12,13 @@ class Git::Deploy::Middleware::Migrate
   # Runs pending migrations if the migrate option was given.
   def call( env )
 
-    options, remote, branch, *args = @app.call env
+    options, _ = @app.call env
 
-    if options.migrate? && heroku?( remote )
-      Git::Deploy::Utils::Heroku.new( remote ).run 'rake db:migrate'
-    end
+    remote = Git::Deploy::Utils::Remote.new env
+    heroku = Git::Deploy::Utils::Heroku.new env
+
+    heroku.run( 'rake db:migrate' ) if options.migrate? && remote.heroku?
 
     env
-  end
-
-  def heroku?( remote )
-    `git config remote.#{remote}.url` =~ /^git@heroku\.com:/
   end
 end

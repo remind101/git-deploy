@@ -10,15 +10,10 @@ class Git::Deploy::Middleware::HerokuBranch
 
     options, remote, branch, *args = env
 
-    if heroku?( remote )
+    if Git::Deploy::Utils::Remote.new( env ).heroku?
       branch << ':master' unless branch.end_with?( ':master' )
     end
 
     @app.call [ options, remote, branch, *args ]
   end
-
-  def heroku?( remote )
-    `git config remote.#{remote}.url` =~ /^git@heroku\.com:/
-  end
-
 end

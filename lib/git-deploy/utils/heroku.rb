@@ -3,8 +3,8 @@ module Git
     module Utils
       class Heroku
 
-        def initialize( remote )
-          @remote = remote
+        def initialize( env )
+          @options, @remote, @branch, @args = env
         end
 
         def maintenance_on

@@ -6,32 +6,22 @@ class Git::Deploy::Middleware::HerokuWorkers
 
   def call( env )
 
-    options, remote, branch, *args = env
+    remote = Git::Deploy::Utils::Remote.new env
+    heroku = Git::Deploy::Utils::Heroku.new env
 
-    if heroku?( remote )
-      @workers = Git::Deploy::Utils::Heroku.new( remote ).ps[ :worker ]
-    end
+    # FIXME this should be heroku.ps[ :worker ].count
+    @workers = heroku.ps[ :worker ] if remote.heroku?
 
-    if heroku?( remote )
-      Git::Deploy::Utils::Heroku.new( remote ).ps_scale :worker => 0
-    end
+    heroku.ps_scale( :worker => 0 ) if remote.heroku? && @workers
 
     env = @app.call env
 
-    if heroku?( remote ) && @workers
-      Git::Deploy::Utils::Heroku.new( remote ).ps_scale :worker => @workers
-    end
+    heroku.ps_scale( :worker => @workers ) if remote.heroku? && @workers
 
     env
-  rescue Interrupt => e
-    if heroku?( remote ) && @workers
-      Git::Deploy::Utils::Heroku.new( remote ).ps_scale :worker => @workers
-    end
+  rescue Interrupt
+    heroku.ps_scale( :worker => @workers ) if remote.heroku? && @workers
 
     raise
-  end
-
-  def heroku?( remote )
-    `git config remote.#{remote}.url` =~ /^git@heroku\.com:/
   end
 end
