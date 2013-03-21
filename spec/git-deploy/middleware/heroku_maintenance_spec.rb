@@ -16,6 +16,13 @@ describe Git::Deploy::Middleware::HerokuMaintenance, :middleware => true do
 
       subject.call env
     end
+    it 'handles an interrupt' do
+      heroku.should_receive( :maintenance_on ).ordered
+         app.should_receive( :call ).with( env ).ordered.and_raise( Interrupt )
+      heroku.should_receive( :maintenance_off ).ordered
+
+      expect { subject.call env }.to raise_error( Interrupt )
+    end
     it 'returns env' do
       subject.call( env ).should == env
     end
