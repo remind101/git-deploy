@@ -1,25 +1,34 @@
-require 'shellwords'
-
 module Git
   module Deploy
     module Utils
       class Git
 
-        def initialize( env )
-          @options, @remote, @branch, @args = env
+        def initialize( env ) # :nodoc:
+          @options, @remote, @branch, *@args = env
         end
 
+        ##
+        # Pushes `@branch` to `@remote`.
         def push
-          `git push #{[ @remote, @branch, *@args ].shelljoin}`
+          Shell[ "git push #{@remote} #{@branch} #{@args.join ' '}" ]
         end
 
-        def current_remote
-          remote = `git config deploy.#{current_branch}.remote`.chomp
-          remote.empty? ? nil : remote
-        end
-
+        ##
+        # Finds the branch the git repository is currently on.
         def current_branch
-          File.basename `git symbolic-ref HEAD`.chomp
+          File.basename Shell[ 'git symbolic-ref HEAD' ]
+        end
+
+        ##
+        # Finds the remote associated with the current branch.
+        def current_remote
+          Shell[ "git config deploy.#{current_branch}.remote" ]
+        end
+
+        ##
+        # Whether or not there is a current remote.
+        def current_remote?
+          !current_remote.empty?
         end
       end
     end

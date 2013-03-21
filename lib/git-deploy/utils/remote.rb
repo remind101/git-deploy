@@ -3,12 +3,14 @@ module Git
     module Utils
       class Remote
 
-        def initialize( env )
-          @options, @remote, @branch, @args = env
+        def initialize( env ) # :nodoc:
+          @options, @remote, @branch, *@args = env
         end
 
+        ##
+        # Whether or not the url for the remote is on heroku.
         def heroku?
-          `git config remote.#{@remote}.url` =~ /^git@heroku\.com:/
+          Shell[ "git config remote.#{@remote}.url" ] =~ /^git@heroku\.com:/
         end
       end
     end

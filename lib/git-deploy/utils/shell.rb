@@ -5,6 +5,10 @@ module Git
   module Deploy
     module Utils
       class Shell < HighLine
+
+        def self.[]( command )
+          `#{command}`.chomp
+        end
       end
     end
   end
