@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby -KU
 
+$:.unshift File.expand_path( '../../lib', __FILE__ )
+
 require 'git-deploy'
 require 'slop'
 
@@ -8,7 +10,7 @@ opts = Slop.new :help => true do
     exit ( Git::Deploy::Utils::Git.new( [ self ] ).current_remote? ? 0 : 1 )
   end
 
-  run Git::Deploy::Runner.new( Git::Deploy::Builder.parse_file( '.gitdeploy', self ) )
+  run Git::Deploy::Runner.new( self )
 end
 
 opts.parse!

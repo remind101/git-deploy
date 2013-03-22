@@ -24,6 +24,15 @@ module Git
       autoload :Shell,             'git-deploy/utils/shell'
     end
   end
+
+  require 'pathname'
+
+  ##
+  # The root directory for this git repository.
+  def root
+    Pathname.new `git rev-parse --show-toplevel`.chomp
+  end
+  module_function :root
 end
 
 require 'dotenv'
