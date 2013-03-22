@@ -12,6 +12,7 @@ module Git
       autoload :HerokuMaintenance, 'git-deploy/middleware/heroku_maintenance'
       autoload :HerokuWorkers,     'git-deploy/middleware/heroku_workers'
       autoload :Hipchat,           'git-deploy/middleware/hipchat'
+      autoload :Librato,           'git-deploy/middleware/librato'
       autoload :Migrate,           'git-deploy/middleware/migrate'
       autoload :Sanity,            'git-deploy/middleware/sanity'
     end
