@@ -11,7 +11,7 @@ class Git::Deploy::Middleware::Countdown
   ##
   # Asks the user to confirm the deployment before proceeding.
   def call( env )
-    options, remote, branch = env
+    options, _ = env
 
     countdown if options.countdown?
 

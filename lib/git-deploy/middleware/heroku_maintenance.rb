@@ -1,7 +1,7 @@
 class Git::Deploy::Middleware::HerokuMaintenance
 
   def self.used( opts )
-    opts.on :m, :maintenance, 'Turn on maintenance mode during deployment'
+    opts.on :d, :maintenance, 'Turn on maintenance mode during deployment'
   end
 
   def initialize( app )
@@ -9,8 +9,7 @@ class Git::Deploy::Middleware::HerokuMaintenance
   end
 
   def call( env )
-    options, remote, branch = env
-
+    options, _ = env
 
     remote = Git::Deploy::Utils::Remote.new env
     heroku = Git::Deploy::Utils::Heroku.new env
