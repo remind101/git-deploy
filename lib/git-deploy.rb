@@ -2,6 +2,7 @@ require 'git-deploy/version'
 
 module Git
   module Deploy
+    autoload :Builder,             'git-deploy/builder'
     autoload :Runner,              'git-deploy/runner'
 
     module Middleware

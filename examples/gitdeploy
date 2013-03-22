@@ -1,0 +1,15 @@
+# This file should be called .gitdeploy and live
+# in git root
+use Git::Deploy::Middleware::Sanity
+use Git::Deploy::Middleware::Countdown
+use Git::Deploy::Middleware::Hipchat,
+  :auth_token => ENV[ 'HIPCHAT_AUTH_TOKEN' ],
+  :room_id    => 'ROBOTS ONLY',
+  :from       => 'Deploy',
+  :notify     => 1
+
+use Git::Deploy::Middleware::HerokuBranch
+use Git::Deploy::Middleware::HerokuMaintenance
+use Git::Deploy::Middleware::HerokuWorkers
+use Git::Deploy::Middleware::Migrate
+use Git::Deploy::Middleware::GitPush
