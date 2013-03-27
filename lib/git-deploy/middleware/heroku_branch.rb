@@ -11,7 +11,7 @@ class Git::Deploy::Middleware::HerokuBranch
     options, remote, branch, *args = env
 
     if Git::Deploy::Utils::Remote.new( env ).heroku?
-      branch << ':master' unless branch.end_with?( ':master' )
+      branch = "#{branch}:master" unless branch.end_with?( ':master' )
     end
 
     @app.call [ options, remote, branch, *args ]

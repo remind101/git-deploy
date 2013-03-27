@@ -7,11 +7,11 @@ shared_context 'middleware', :middleware => true do
 
   ##
   # The remote name.
-  let( :remote ){ 'production' }
+  let( :remote ){ 'production'.freeze }
 
   ##
   # The branch name.
-  let( :branch ){ 'master' }
+  let( :branch ){ 'master'.freeze }
 
   ##
   # The env array.
