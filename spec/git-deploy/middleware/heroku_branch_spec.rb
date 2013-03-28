@@ -4,17 +4,22 @@ describe Git::Deploy::Middleware::HerokuBranch, :middleware => true do
 
   subject { described_class.new app }
 
-  let( :branch ){ 'feature'.freeze }
-
-  on_heroku do
-    it 'returns env' do
-      subject.call( env ).should == [ options, remote, 'feature:master' ]
-    end
+  it 'appends :master to the branch when the remote is heroku' do
+    env[ 'remote.heroku' ] = true
+    env[ 'branch'        ] = 'feature'
+    subject.call( env )
+    env[ 'branch' ].should == 'feature:master'
   end
-
-  off_heroku do
-    it 'returns env' do
-      subject.call( env ).should == env
-    end
+  it 'does not append :master to the branch when the remote is not heroku' do
+    env[ 'remote.heroku' ] = false
+    env[ 'branch'        ] = 'feature'
+    subject.call( env )
+    env[ 'branch' ].should == 'feature'
+  end
+  it 'does not append :master to the branch when the branch is master' do
+    env[ 'remote.heroku' ] = true
+    env[ 'branch'        ] = 'master'
+    subject.call( env )
+    env[ 'branch' ].should == 'master'
   end
 end

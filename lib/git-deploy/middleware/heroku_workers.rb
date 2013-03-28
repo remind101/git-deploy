@@ -6,20 +6,30 @@ class Git::Deploy::Middleware::HerokuWorkers
 
   def call( env )
 
-    remote = Git::Deploy::Utils::Remote.new env
-    heroku = Git::Deploy::Utils::Heroku.new env
+    if env[ 'remote.heroku' ]
+      # TODO catch exit status
+      @workers = `heroku ps --remote #{env[ 'remote' ]} | grep -c worker`.to_i
+    end
 
-    @workers = heroku.ps[ :worker ] if remote.heroku?
+    if env[ 'remote.heroku' ] && @workers
+      # TODO catch exit status
+      `heroku ps:scale worker=0 --remote #{env[ 'remote' ]}`
+    end
 
-    heroku.ps_scale( :worker => 0 ) if remote.heroku? && @workers
+    @app.call env
 
-    env = @app.call env
-
-    heroku.ps_scale( :worker => @workers ) if remote.heroku? && @workers
+    if env[ 'remote.heroku' ] && @workers
+      # TODO catch exit status
+      `heroku ps:scale worker=#{@workers} --remote #{env[ 'remote' ]}`
+    end
 
     env
   rescue Interrupt
-    heroku.ps_scale( :worker => @workers ) if remote.heroku? && @workers
+    if env[ 'remote.heroku' ] && @workers
+      # TODO catch exit status
+      `heroku ps:scale worker=#{@workers} --remote #{env[ 'remote' ]}`
+    end
+
 
     raise
   end

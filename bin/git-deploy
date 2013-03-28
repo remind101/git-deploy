@@ -3,7 +3,7 @@
 require 'git-deploy'
 require 'slop'
 
-opts = Slop.new :help => true do
+opts = Slop.new :help => true, :autocreate => true do
   on :t, :test, 'Exit immediately if there is no remote.' do |opts, args|
     exit ( Git::Deploy::Utils::Git.new( [ self ] ).current_remote? ? 0 : 1 )
   end

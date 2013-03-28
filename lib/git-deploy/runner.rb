@@ -1,11 +1,5 @@
 require 'middleware'
 
-# FIXME remove this once https://github.com/mitchellh/middleware/pull/3 merges
-::Middleware::Runner.instance_eval do
-  remove_const :EMPTY_MIDDLEWARE
-  const_set    :EMPTY_MIDDLEWARE, lambda { |env| env }
-end
-
 module Git
   module Deploy
     class Runner < ::Middleware::Builder
@@ -24,19 +18,21 @@ module Git
       end
 
       ##
-      # Turn Slop's multiple arguments to #call into an array. Also,
+      # Turn Slop's multiple arguments to #call into the env hash. Also,
       # rescue errors and report them to the user appropriately.
-      def call( *args )
-        super args.flatten
+      def call( opts, args )
+        env = {
+          'remote' => args[ 0 ],
+          'branch' => args[ 1 ]
+        }
+
+        super env
       rescue Interrupt => e
         puts e.message.red
         exit 1
       rescue ArgumentError => e
         puts e.message
         puts args.first # prints the usage instructions
-        exit 1
-      rescue SocketError => e
-        puts "You need to be online to deploy, bro.".red
         exit 1
       end
 

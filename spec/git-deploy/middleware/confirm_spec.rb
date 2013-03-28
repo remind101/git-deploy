@@ -4,35 +4,22 @@ describe Git::Deploy::Middleware::Confirm, :middleware => true do
 
   subject { described_class.new app }
 
-  let( :shell ){ double( 'Shell' ).as_null_object }
-
-  before { Git::Deploy::Utils::Shell.stub :new => shell }
-
   describe '#call' do
 
     it 'asks the user to confirm the deployment' do
-      shell.should_receive( :agree ).with( 'Deploy master to production?' ){ true }
-
+      env[ 'options.confirm' ] = true
+      subject.should_receive( :confirm? ).with( remote, branch ){ true }
       subject.call env
     end
-
-    context 'when the user agrees' do
-      before { shell.stub :agree => true }
-
-      it 'does not raise an error' do
-        expect { subject.call( env ) }.not_to raise_error
-      end
-      it 'returns env' do
-        subject.call( env ).should == env
-      end
+    it 'raises an error if the user does not confirm the deployment' do
+      env[ 'options.confirm' ] = true
+      subject.should_receive( :confirm? ).with( remote, branch ){ false }
+      expect { subject.call( env ) }.to raise_error( Interrupt )
     end
-
-    context 'when the user does not agree' do
-      before { shell.stub :agree => false }
-
-      it 'raises an error' do
-        expect { subject.call( env ) }.to raise_error( Interrupt )
-      end
+    it 'does not ask the user if the option is not given' do
+      env[ 'options.confirm' ] = false
+      subject.should_not_receive( :confirm? )
+      subject.call env
     end
   end
 end

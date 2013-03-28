@@ -7,20 +7,16 @@ class Git::Deploy::Middleware::Hipchat
   end
 
   def call( env )
-
-    options, remote, branch, *args = env
-
-    hipchat "#{user} is deploying #{branch} to #{remote}",
+    hipchat "#{user} is deploying #{env[ 'branch' ]} to #{env[ 'remote' ]}",
       :color => 'yellow'
 
-    env = @app.call env
+    @app.call env
 
-    hipchat "#{user} successfully deployed #{branch} to #{remote}",
+    hipchat "#{user} successfully deployed #{env[ 'branch' ]} to #{env[ 'remote' ]}",
       :color => 'green'
 
-    env
   rescue Interrupt => e
-    hipchat "#{user} interrupted the deploy of #{branch} to #{remote}",
+    hipchat "#{user} interrupted the deploy of #{env[ 'branch' ]} to #{env[ 'remote' ]}",
       :color => 'red'
 
     raise

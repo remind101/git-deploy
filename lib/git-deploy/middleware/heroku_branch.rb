@@ -1,19 +1,17 @@
+##
+# If this remote is a heroku app, sets the destination branch to "master".
 class Git::Deploy::Middleware::HerokuBranch
 
   def initialize( app )
     @app = app
   end
 
-  ##
-  # If this remote is a heroku app, sets the destination branch to "master".
   def call( env )
 
-    options, remote, branch, *args = env
-
-    if Git::Deploy::Utils::Remote.new( env ).heroku?
-      branch = "#{branch}:master" unless branch.end_with?( ':master' )
+    if env[ 'remote.heroku' ] && env[ 'branch' ] != 'master'
+      env[ 'branch' ] = '%s:master' % [ env[ 'branch' ] ]
     end
 
-    @app.call [ options, remote, branch, *args ]
+    @app.call env
   end
 end

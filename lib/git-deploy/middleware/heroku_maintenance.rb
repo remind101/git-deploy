@@ -9,20 +9,26 @@ class Git::Deploy::Middleware::HerokuMaintenance
   end
 
   def call( env )
-    options, _ = env
 
-    remote = Git::Deploy::Utils::Remote.new env
-    heroku = Git::Deploy::Utils::Heroku.new env
+    if env[ 'options.maintenance' ] && env[ 'remote.heroku' ]
+      # TODO catch exit status
+      `heroku maintenance:on --remote #{env[ 'remote' ]}`
+    end
 
-    heroku.maintenance_on if options.maintenance? && remote.heroku?
+    @app.call env
 
-    env = @app.call env
-
-    heroku.maintenance_off if options.maintenance? && remote.heroku?
+    if env[ 'options.maintenance' ] && env[ 'remote.heroku' ]
+      # TODO catch exit status
+      `heroku maintenance:off --remote #{env[ 'remote' ]}`
+    end
 
     env
   rescue Interrupt
-    heroku.maintenance_off if options.maintenance? && remote.heroku?
+    if env[ 'options.maintenance' ] && env[ 'remote.heroku' ]
+      # TODO catch exit status
+      `heroku maintenance:off --remote #{env[ 'remote' ]}`
+    end
+
 
     raise
   end

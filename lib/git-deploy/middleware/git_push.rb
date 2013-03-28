@@ -5,13 +5,10 @@ class Git::Deploy::Middleware::GitPush
   end
 
   ##
-  # Deploys [branch] to [remote]. Pretty much the most important thing.
-  # Consumes any leftover flags from the original command.
+  # Pretty much the most important thing.
   def call( env )
 
-    options, remote, branch, *args = env
-
-    Git::Deploy::Utils::Git.new( env ).push
+    `git push #{env[ 'remote' ]} #{env[ 'branch' ]}`
 
     @app.call env
   end

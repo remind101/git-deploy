@@ -4,40 +4,32 @@ describe Git::Deploy::Middleware::HerokuWorkers, :middleware => true do
 
   subject { described_class.new app }
 
-  let( :heroku ){ double( 'Heroku' ).as_null_object }
+  it 'scales the workers when the remote is heroku' do
+    env[ 'remote.heroku' ] = true
 
-  before { Git::Deploy::Utils::Heroku.stub :new => heroku }
+    subject.should_receive( :` ).with( 'heroku ps --remote production | grep -c worker' ).ordered { "2\n" }
+    subject.should_receive( :` ).with( 'heroku ps:scale worker=0 --remote production' ).ordered
+        app.should_receive( :call ).with( env )
+    subject.should_receive( :` ).with( 'heroku ps:scale worker=2 --remote production' ).ordered
 
-  on_heroku do
-    it 'performs the correct steps in order' do
-      heroku.should_receive( :ps ).ordered { { :worker => 1 } }
-      heroku.should_receive( :ps_scale ).with( :worker => 0 ).ordered
-         app.should_receive( :call ).with( env ).ordered.and_call_original
-      heroku.should_receive( :ps_scale ).with( :worker => 1 ).ordered
-
-      subject.call env
-    end
-    it 'handles an interrupt' do
-      heroku.should_receive( :ps ).ordered { { :worker => 1 } }
-      heroku.should_receive( :ps_scale ).with( :worker => 0 ).ordered
-         app.should_receive( :call ).with( env ).ordered.and_raise( Interrupt )
-      heroku.should_receive( :ps_scale ).with( :worker => 1 ).ordered
-
-      expect { subject.call env }.to raise_error( Interrupt )
-    end
-    it 'returns env' do
-      subject.call( env ).should == env
-    end
+    subject.call env
   end
+  it 'does not scale workers when the remote is not heroku' do
+    env[ 'remote.heroku' ] = false
 
-  off_heroku do
-    it 'performs the correct steps in order' do
-      app.should_receive( :call ).with( env ).ordered.and_call_original
+    subject.should_not_receive( :` )
+        app.should_receive( :call ).with( env )
 
-      subject.call env
-    end
-    it 'returns env' do
-      subject.call( env ).should == env
-    end
+    subject.call env
+  end
+  it 'scales the workers back up after an interrupt' do
+    env[ 'remote.heroku' ] = true
+
+    subject.should_receive( :` ).with( 'heroku ps --remote production | grep -c worker' ).ordered { "2\n" }
+    subject.should_receive( :` ).with( 'heroku ps:scale worker=0 --remote production' ).ordered
+        app.should_receive( :call ).with( env ).and_raise( Interrupt )
+    subject.should_receive( :` ).with( 'heroku ps:scale worker=2 --remote production' ).ordered
+
+    expect { subject.call( env ) }.to raise_error( Interrupt )
   end
 end
