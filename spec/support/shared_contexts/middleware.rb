@@ -17,8 +17,7 @@ shared_context 'middleware', :middleware => true do
   # The env array.
   let( :env ){ {
     'remote' => remote.freeze,
-    'branch' => branch.freeze,
-    'args'   => nil
+    'branch' => branch.freeze
   } }
 
   ##

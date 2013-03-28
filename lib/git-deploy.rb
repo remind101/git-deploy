@@ -7,6 +7,7 @@ module Git
 
     autoload :Confirm,           'git-deploy/confirm'
     autoload :Countdown,         'git-deploy/countdown'
+    autoload :GitConfig,         'git-deploy/git_config'
     autoload :GitPush,           'git-deploy/git_push'
     autoload :HerokuBranch,      'git-deploy/heroku_branch'
     autoload :HerokuMaintenance, 'git-deploy/heroku_maintenance'
