@@ -11,19 +11,17 @@ class Git::Deploy::Countdown
   ##
   # Asks the user to confirm the deployment before proceeding.
   def call( env )
-    options, _ = env
 
-    countdown if options.countdown?
+    if env[ 'options.countdown' ]
+
+      print "Deploying in t minus "
+      5.downto( 1 ) do |n|
+        print "#{n}..."
+        sleep 1
+      end
+      puts
+    end
 
     @app.call env
-  end
-
-  def countdown
-    print "Deploying in t minus "
-    5.downto(1) do |n|
-      print "#{n}..."
-      sleep 1
-    end
-    puts
   end
 end

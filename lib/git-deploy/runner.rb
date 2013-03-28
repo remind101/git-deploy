@@ -8,7 +8,7 @@ module Git
       # Sets up the middleware stack for deploy runs.
       def initialize( opts )
         @opts = opts
-        super { instance_eval( config.read ) if config.exist? }
+        super( { } ){ instance_eval( config.read ) if config.exist? }
       end
 
       ##
@@ -26,6 +26,10 @@ module Git
           'branch' => args[ 1 ]
         }
 
+        opts.each do |o|
+          env[ "options.#{o.key}" ] = o.value
+        end
+
         super env
       rescue Interrupt => e
         puts e.message.red
@@ -37,8 +41,6 @@ module Git
       end
 
       class ProgressBar
-        require 'git-deploy/utils/shell'
-
         def initialize( app, middleware )
           @app, @middleware = app, middleware
         end
