@@ -15,16 +15,21 @@ module Git
     autoload :Hipchat,           'git-deploy/hipchat'
     autoload :Migrate,           'git-deploy/migrate'
     autoload :Sanity,            'git-deploy/sanity'
-  end
 
-  require 'pathname'
+    require 'pathname'
 
-  ##
-  # The root directory for this git repository.
-  def root
-    Pathname.new `git rev-parse --show-toplevel`.chomp
+    ##
+    # The root directory for this git repository.
+    def root
+      Pathname.new `git rev-parse --show-toplevel`.chomp
+    end
+    module_function :root
+
+    def on_deployable_branch?
+      !`git config deploy.$(basename $(git symbolic-ref HEAD)).remote`.empty?
+    end
+    module_function :on_deployable_branch?
   end
-  module_function :root
 end
 
 ##

@@ -14,7 +14,7 @@ module Git
       ##
       # The local config file for the middleware stack.
       def config
-        Git.root.join '.gitdeploy'
+        Git::Deploy.root.join '.gitdeploy'
       end
 
       ##

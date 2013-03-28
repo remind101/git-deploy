@@ -5,9 +5,7 @@ require 'slop'
 
 opts = Slop.new :help => true, :autocreate => true do
   on :t, :test, 'Exit immediately if there is no remote.' do |opts, args|
-    # TODO this belongs somewhere else
-    `git config deploy.$(basename $(git symbolic-ref HEAD)).remote`
-    exit $?.exitstatus
+    exit Git::Deploy.on_deployable_branch? ? 0 : 1
   end
 
   run Git::Deploy::Runner.new( self )
