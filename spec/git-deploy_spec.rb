@@ -17,12 +17,12 @@ describe Git::Deploy do
   describe '.on_deployable_branch?' do
     it 'is false if there is not a deploy remote set up for this branch' do
       # TODO exit status should be 1
-      subject.should_receive( :` ).with( 'git config deploy.$(basename $(git symbolic-ref HEAD)).remote' ){ '' }
+      subject.should_receive( :system ).with( 'git config deploy.$(basename $(git symbolic-ref HEAD)).remote' ){ false }
       subject.on_deployable_branch?.should == false
     end
     it 'is true if there is a deploy remote set up for this branch' do
       # TODO exit status should be 0
-      subject.should_receive( :` ).with( 'git config deploy.$(basename $(git symbolic-ref HEAD)).remote' ){ 'production' }
+      subject.should_receive( :system ).with( 'git config deploy.$(basename $(git symbolic-ref HEAD)).remote' ){ true }
       subject.on_deployable_branch?.should == true
     end
   end

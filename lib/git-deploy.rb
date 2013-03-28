@@ -25,8 +25,10 @@ module Git
     end
     module_function :root
 
+    ##
+    #
     def on_deployable_branch?
-      !`git config deploy.$(basename $(git symbolic-ref HEAD)).remote`.empty?
+      system 'git config deploy.$(basename $(git symbolic-ref HEAD)).remote'
     end
     module_function :on_deployable_branch?
   end
