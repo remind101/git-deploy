@@ -36,7 +36,3 @@ class String
     define_method( color ){ HighLine::Style( color.to_sym ).color self }
   end
 end
-
-# TODO get rid of dotenv dependency, use git config instead
-require 'dotenv'
-Dotenv.load

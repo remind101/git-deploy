@@ -7,17 +7,28 @@ class Git::Deploy::Hipchat
   end
 
   def call( env )
+
+    unless env[ 'deploy.hipchat.auth_token' ]
+      raise ArgumentError, <<-EOS
+      #{self.class} requires that `deploy.hipchat.auth_token` be set in
+      your git config. Add the config by with the following command
+      or remove this middleware from the stack in .gitdeploy.
+
+        git config add deploy.hipchat.auth_token [your value]
+      EOS
+    end
+
     hipchat "#{user} is deploying #{env[ 'branch' ]} to #{env[ 'remote' ]}",
-      :color => 'yellow'
+      :color => 'yellow', :auth_token => env[ 'deploy.hipchat.auth_token' ]
 
     @app.call env
 
     hipchat "#{user} successfully deployed #{env[ 'branch' ]} to #{env[ 'remote' ]}",
-      :color => 'green'
+      :color => 'green', :auth_token => env[ 'deploy.hipchat.auth_token' ]
 
   rescue Interrupt => e
     hipchat "#{user} interrupted the deploy of #{env[ 'branch' ]} to #{env[ 'remote' ]}",
-      :color => 'red'
+      :color => 'red', :auth_token => env[ 'deploy.hipchat.auth_token' ]
 
     raise
   end

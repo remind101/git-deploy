@@ -1,10 +1,10 @@
 use Git::Deploy::Sanity
+use Git::Deploy::GitConfig
 use Git::Deploy::Countdown
 use Git::Deploy::Hipchat,
-  :auth_token => ENV[ 'HIPCHAT_AUTH_TOKEN' ],
-  :room_id    => 'ROBOTS ONLY',
-  :from       => 'Deploy',
-  :notify     => 1
+  :room_id => 'ROBOTS ONLY',
+  :from    => 'Deploy',
+  :notify  => 1
 use Git::Deploy::HerokuBranch
 use Git::Deploy::HerokuMaintenance
 use Git::Deploy::HerokuWorkers
