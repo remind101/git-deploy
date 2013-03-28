@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Git::Deploy::Middleware::HerokuBranch, :middleware => true do
+describe Git::Deploy::HerokuBranch, :middleware => true do
 
   subject { described_class.new app }
 

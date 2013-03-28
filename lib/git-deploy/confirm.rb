@@ -1,4 +1,4 @@
-class Git::Deploy::Middleware::Confirm
+class Git::Deploy::Confirm
 
   def self.used( opts )
     opts.on :c, :confirm, 'Ask the user to confirm the deployment.'

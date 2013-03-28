@@ -1,4 +1,4 @@
-class Git::Deploy::Middleware::Migrate
+class Git::Deploy::Migrate
 
   def self.used( opts )
     opts.on :m, :migrate, 'Run migrations after deployment.'

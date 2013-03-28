@@ -1,6 +1,6 @@
 ##
 # If this remote is a heroku app, sets the destination branch to "master".
-class Git::Deploy::Middleware::HerokuBranch
+class Git::Deploy::HerokuBranch
 
   def initialize( app )
     @app = app

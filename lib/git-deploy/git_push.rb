@@ -1,4 +1,4 @@
-class Git::Deploy::Middleware::GitPush
+class Git::Deploy::GitPush
 
   def initialize( app )
     @app = app

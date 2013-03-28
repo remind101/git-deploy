@@ -1,4 +1,4 @@
-class Git::Deploy::Middleware::HerokuMaintenance
+class Git::Deploy::HerokuMaintenance
 
   def self.used( opts )
     opts.on :d, :maintenance, 'Turn on maintenance mode during deployment'

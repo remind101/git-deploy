@@ -1,4 +1,4 @@
-class Git::Deploy::Middleware::HerokuWorkers
+class Git::Deploy::HerokuWorkers
 
   def initialize( app )
     @app = app

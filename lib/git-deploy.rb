@@ -2,20 +2,18 @@ require 'git-deploy/version'
 
 module Git
   module Deploy
-    autoload :Builder,             'git-deploy/builder'
-    autoload :Runner,              'git-deploy/runner'
+    autoload :Builder,           'git-deploy/builder'
+    autoload :Runner,            'git-deploy/runner'
 
-    module Middleware
-      autoload :Confirm,           'git-deploy/middleware/confirm'
-      autoload :Countdown,         'git-deploy/middleware/countdown'
-      autoload :GitPush,           'git-deploy/middleware/git_push'
-      autoload :HerokuBranch,      'git-deploy/middleware/heroku_branch'
-      autoload :HerokuMaintenance, 'git-deploy/middleware/heroku_maintenance'
-      autoload :HerokuWorkers,     'git-deploy/middleware/heroku_workers'
-      autoload :Hipchat,           'git-deploy/middleware/hipchat'
-      autoload :Migrate,           'git-deploy/middleware/migrate'
-      autoload :Sanity,            'git-deploy/middleware/sanity'
-    end
+    autoload :Confirm,           'git-deploy/confirm'
+    autoload :Countdown,         'git-deploy/countdown'
+    autoload :GitPush,           'git-deploy/git_push'
+    autoload :HerokuBranch,      'git-deploy/heroku_branch'
+    autoload :HerokuMaintenance, 'git-deploy/heroku_maintenance'
+    autoload :HerokuWorkers,     'git-deploy/heroku_workers'
+    autoload :Hipchat,           'git-deploy/hipchat'
+    autoload :Migrate,           'git-deploy/migrate'
+    autoload :Sanity,            'git-deploy/sanity'
   end
 
   require 'pathname'

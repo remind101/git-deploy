@@ -1,12 +1,12 @@
-use Git::Deploy::Middleware::Sanity
-use Git::Deploy::Middleware::Countdown
-use Git::Deploy::Middleware::Hipchat,
+use Git::Deploy::Sanity
+use Git::Deploy::Countdown
+use Git::Deploy::Hipchat,
   :auth_token => ENV[ 'HIPCHAT_AUTH_TOKEN' ],
   :room_id    => 'ROBOTS ONLY',
   :from       => 'Deploy',
   :notify     => 1
-use Git::Deploy::Middleware::HerokuBranch
-use Git::Deploy::Middleware::HerokuMaintenance
-use Git::Deploy::Middleware::HerokuWorkers
-use Git::Deploy::Middleware::Migrate
-use Git::Deploy::Middleware::GitPush
+use Git::Deploy::HerokuBranch
+use Git::Deploy::HerokuMaintenance
+use Git::Deploy::HerokuWorkers
+use Git::Deploy::Migrate
+use Git::Deploy::GitPush

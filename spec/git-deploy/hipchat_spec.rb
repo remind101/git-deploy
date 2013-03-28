@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Git::Deploy::Middleware::Hipchat, :middleware => true do
+describe Git::Deploy::Hipchat, :middleware => true do
 
   subject { described_class.new app, { } }
 

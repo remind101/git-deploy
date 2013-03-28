@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Git::Deploy::Middleware::Sanity, :middleware => true do
+describe Git::Deploy::Sanity, :middleware => true do
 
   subject { described_class.new app }
 

@@ -1,4 +1,4 @@
-class Git::Deploy::Middleware::Sanity
+class Git::Deploy::Sanity
 
   def initialize( app )
     @app = app

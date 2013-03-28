@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Git::Deploy::Middleware::Migrate, :middleware => true do
+describe Git::Deploy::Migrate, :middleware => true do
 
   subject { described_class.new app }
 

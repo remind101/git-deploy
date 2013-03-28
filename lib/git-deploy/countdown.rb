@@ -1,4 +1,4 @@
-class Git::Deploy::Middleware::Countdown
+class Git::Deploy::Countdown
 
   def self.used( opts )
     opts.on :c, :countdown, 'Count down before deploying.'

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Git::Deploy::Middleware::GitPush, :middleware => true do
+describe Git::Deploy::GitPush, :middleware => true do
 
   subject { described_class.new app }
 

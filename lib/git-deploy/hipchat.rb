@@ -1,6 +1,6 @@
 require 'net/http'
 
-class Git::Deploy::Middleware::Hipchat
+class Git::Deploy::Hipchat
 
   def initialize( app, config )
     @app, @config = app, config
