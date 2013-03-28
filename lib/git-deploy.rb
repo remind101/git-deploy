@@ -16,13 +16,6 @@ module Git
       autoload :Migrate,           'git-deploy/middleware/migrate'
       autoload :Sanity,            'git-deploy/middleware/sanity'
     end
-
-    module Utils
-      autoload :Git,               'git-deploy/utils/git'
-      autoload :Heroku,            'git-deploy/utils/heroku'
-      autoload :Remote,            'git-deploy/utils/remote'
-      autoload :Shell,             'git-deploy/utils/shell'
-    end
   end
 
   require 'pathname'
@@ -35,5 +28,16 @@ module Git
   module_function :root
 end
 
+##
+# Core extensions for coloring strings.
+# TODO move this somewhere else?
+class String
+  require 'highline'
+  HighLine::COLORS.map(&:downcase).each do |color|
+    define_method( color ){ HighLine::Style( color.to_sym ).color self }
+  end
+end
+
+# TODO get rid of dotenv dependency, use git config instead
 require 'dotenv'
 Dotenv.load
