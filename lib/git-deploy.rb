@@ -2,38 +2,44 @@ require 'git-deploy/version'
 
 module Git
   module Deploy
-    autoload :Builder,             'git-deploy/builder'
-    autoload :Runner,              'git-deploy/runner'
+    autoload :Builder,           'git-deploy/builder'
+    autoload :Runner,            'git-deploy/runner'
 
-    module Middleware
-      autoload :Confirm,           'git-deploy/middleware/confirm'
-      autoload :Countdown,         'git-deploy/middleware/countdown'
-      autoload :GitPush,           'git-deploy/middleware/git_push'
-      autoload :HerokuBranch,      'git-deploy/middleware/heroku_branch'
-      autoload :HerokuMaintenance, 'git-deploy/middleware/heroku_maintenance'
-      autoload :HerokuWorkers,     'git-deploy/middleware/heroku_workers'
-      autoload :Hipchat,           'git-deploy/middleware/hipchat'
-      autoload :Migrate,           'git-deploy/middleware/migrate'
-      autoload :Sanity,            'git-deploy/middleware/sanity'
+    autoload :Confirm,           'git-deploy/confirm'
+    autoload :Countdown,         'git-deploy/countdown'
+    autoload :GitConfig,         'git-deploy/git_config'
+    autoload :GitPush,           'git-deploy/git_push'
+    autoload :HerokuBranch,      'git-deploy/heroku_branch'
+    autoload :HerokuMaintenance, 'git-deploy/heroku_maintenance'
+    autoload :HerokuWorkers,     'git-deploy/heroku_workers'
+    autoload :Hipchat,           'git-deploy/hipchat'
+    autoload :Migrate,           'git-deploy/migrate'
+    autoload :Sanity,            'git-deploy/sanity'
+
+    require 'pathname'
+
+    ##
+    # The root directory for this git repository.
+    def root
+      Pathname.new `git rev-parse --show-toplevel`.chomp
     end
+    module_function :root
 
-    module Utils
-      autoload :Git,               'git-deploy/utils/git'
-      autoload :Heroku,            'git-deploy/utils/heroku'
-      autoload :Remote,            'git-deploy/utils/remote'
-      autoload :Shell,             'git-deploy/utils/shell'
+    ##
+    #
+    def on_deployable_branch?
+      system 'git config deploy.$(basename $(git symbolic-ref HEAD)).remote'
     end
+    module_function :on_deployable_branch?
   end
-
-  require 'pathname'
-
-  ##
-  # The root directory for this git repository.
-  def root
-    Pathname.new `git rev-parse --show-toplevel`.chomp
-  end
-  module_function :root
 end
 
-require 'dotenv'
-Dotenv.load
+##
+# Core extensions for coloring strings.
+# TODO move this somewhere else?
+class String
+  require 'highline'
+  HighLine::COLORS.map(&:downcase).each do |color|
+    define_method( color ){ HighLine::Style( color.to_sym ).color self }
+  end
+end
