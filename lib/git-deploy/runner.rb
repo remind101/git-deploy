@@ -63,7 +63,7 @@ module Git
         super ProgressBar, middleware
         super
 
-        middleware.used( @opts ) if middleware.respond_to?( :used )
+        middleware.configure( @opts ) if middleware.respond_to?( :configure )
       end
     end
   end

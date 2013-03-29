@@ -42,4 +42,12 @@ describe Git::Deploy::HerokuMaintenance, :middleware => true do
 
     expect { subject.call( env ) }.to raise_error( Interrupt )
   end
+
+  describe '.configure' do
+    it 'adds the correct option' do
+      opts = double 'Slop'
+      opts.should_receive( :on ).with( :d, :maintenance, an_instance_of( String ) )
+      described_class.configure opts
+    end
+  end
 end
