@@ -11,40 +11,16 @@ shared_context 'middleware', :middleware => true do
 
   ##
   # The branch name.
-  let( :branch ){ 'master' }
+  let( :branch ){ 'feature' }
 
   ##
   # The env array.
-  let( :env ){ [ options, remote, branch ] }
+  let( :env ){ {
+    'remote' => remote.freeze,
+    'branch' => branch.freeze
+  } }
 
   ##
   # An app to hand to your middleware. Does absolutely nothing.
-  let( :app ){ lambda { |env| env } }
-end
-
-module HerokuContexts
-
-  def on_heroku( &block )
-    context 'when the remote is a heroku app' do
-      let( :remote ){ double( 'Remote', :heroku? => true ).as_null_object }
-
-      before { Git::Deploy::Utils::Remote.stub :new => remote }
-
-      instance_exec &block
-    end
-  end
-
-  def off_heroku( &block )
-    context 'when the remote is not a heroku app' do
-      let( :remote ){ double( 'Remote', :heroku? => false ).as_null_object }
-
-      before { Git::Deploy::Utils::Remote.stub :new => remote }
-
-      instance_exec &block
-    end
-  end
-end
-
-RSpec.configure do |c|
-  c.extend HerokuContexts, :middleware => true
+  let( :app ){ lambda { |env| } }
 end

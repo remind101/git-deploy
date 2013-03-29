@@ -1,4 +1,4 @@
-class Git::Deploy::Middleware::Confirm
+class Git::Deploy::Confirm
 
   def self.used( opts )
     opts.on :c, :confirm, 'Ask the user to confirm the deployment.'
@@ -12,14 +12,15 @@ class Git::Deploy::Middleware::Confirm
   # Asks the user to confirm the deployment before proceeding.
   def call( env )
 
-    options, remote, branch = env
-
-    shell = Git::Deploy::Utils::Shell.new
-
-    if options.confirm? && !shell.agree( "Deploy #{branch} to #{remote}?" )
+    if env[ 'options.confirm' ] && !confirm?( env[ 'remote' ], env[ 'branch' ] )
       raise Interrupt, 'Use cancelled the deployment.'
     end
 
     @app.call env
+  end
+
+  def confirm?( remote, branch )
+    shell = HighLine.new
+    shell.ask? "Deploy #{branch} to #{remote}?"
   end
 end
