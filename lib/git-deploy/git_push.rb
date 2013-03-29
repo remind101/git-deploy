@@ -1,6 +1,6 @@
 class Git::Deploy::GitPush
 
-  def self.used( opts )
+  def self.configure( opts )
     opts.on :f, :force, 'Set the --force flag during the `git push`.'
   end
 

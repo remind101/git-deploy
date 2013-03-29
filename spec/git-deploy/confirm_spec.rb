@@ -22,4 +22,12 @@ describe Git::Deploy::Confirm, :middleware => true do
       subject.call env
     end
   end
+
+  describe '.configure' do
+    it 'adds the correct option' do
+      opts = double 'Slop'
+      opts.should_receive( :on ).with( :c, :confirm, an_instance_of( String ) )
+      described_class.configure opts
+    end
+  end
 end

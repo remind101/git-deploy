@@ -1,6 +1,6 @@
 class Git::Deploy::Confirm
 
-  def self.used( opts )
+  def self.configure( opts )
     opts.on :c, :confirm, 'Ask the user to confirm the deployment.'
   end
 

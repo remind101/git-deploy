@@ -1,6 +1,6 @@
 class Git::Deploy::Countdown
 
-  def self.used( opts )
+  def self.configure( opts )
     opts.on :c, :countdown, 'Count down before deploying.'
   end
 
