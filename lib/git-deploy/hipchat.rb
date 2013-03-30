@@ -34,7 +34,7 @@ class Git::Deploy::Hipchat
   end
 
   def user
-    `git config user.email`.chomp
+    @user ||= `git config user.email`.chomp
   end
 
   def hipchat( message, options={} )
