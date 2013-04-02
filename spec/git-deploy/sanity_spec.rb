@@ -15,7 +15,7 @@ describe Git::Deploy::Sanity, :middleware => true do
     end
     it 'sets the remote to the current remote if it is not provided' do
       env[ 'remote' ] = nil
-      subject.stub :current_remote => 'production'
+      env[ 'git.remote' ] = 'production'
       subject.stub :remote_exists? => true
       subject.call env
       env[ 'remote' ].should == 'production'
@@ -38,7 +38,7 @@ describe Git::Deploy::Sanity, :middleware => true do
     end
     it 'sets the branch to the current branch if it is not provided' do
       env[ 'branch' ] = nil
-      subject.stub :current_branch => 'master'
+      env[ 'git.branch' ] = 'master'
       subject.stub :branch_exists? => true
       subject.call env
       env[ 'branch' ].should == 'master'

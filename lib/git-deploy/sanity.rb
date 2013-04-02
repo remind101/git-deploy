@@ -6,34 +6,26 @@ class Git::Deploy::Sanity
 
   def call( env )
 
-    env[ 'remote' ] ||= current_remote
-
-    unless remote_exists? env[ 'remote' ]
-      raise ArgumentError, "Remote '#{env[ 'remote' ]}' does not exist"
-    end
-
-    env[ 'branch' ] ||= current_branch
+    env[ 'branch' ] ||= env[ 'git.branch' ]
 
     unless branch_exists? env[ 'branch' ]
       raise ArgumentError, "Branch '#{env[ 'branch' ]}' does not exist"
     end
 
+    env[ 'remote' ] ||= env[ 'git.remote' ]
+
+    unless remote_exists? env[ 'remote' ]
+      raise ArgumentError, "Remote '#{env[ 'remote' ]}' does not exist"
+    end
+
     @app.call env
   end
 
-  def current_branch
-    `basename $(git symbolic-ref HEAD)`
-  end
-
   def branch_exists?( branch )
-    system %Q{test -n "$(git branch --list #{branch})"}
-  end
-
-  def current_remote
-    `git config deploy.#{current_branch}.remote`
+    system `git show-ref --quiet --verify refs/heads/#{branch}`
   end
 
   def remote_exists?( remote )
-    system "git remote | grep #{remote} -qx"
+    system `git-show-ref --quiet --verify refs/heads/#{remote}/master`
   end
 end
