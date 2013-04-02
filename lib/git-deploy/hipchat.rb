@@ -8,33 +8,29 @@ class Git::Deploy::Hipchat
 
   def call( env )
 
-    unless env[ 'deploy.hipchat.auth_token' ]
+    unless env[ 'hipchat.authtoken' ]
       raise ArgumentError, <<-EOS
-      #{self.class} requires that `deploy.hipchat.auth_token` be set in
+      #{self.class} requires that `hipchat.authtoken` be set in
       your git config. Add the config by with the following command
       or remove this middleware from the stack in .gitdeploy.
 
-        git config add deploy.hipchat.auth_token [your value]
+        git config --add hipchat.authtoken [your value]
       EOS
     end
 
-    hipchat "#{user} is deploying #{env[ 'branch' ]} to #{env[ 'remote' ]}",
-      :color => 'yellow', :auth_token => env[ 'deploy.hipchat.auth_token' ]
+    hipchat "#{env[ 'user.email' ]} is deploying #{env[ 'branch' ]} to #{env[ 'remote' ]}",
+      :color => 'yellow', :auth_token => env[ 'hipchat.authtoken' ]
 
     @app.call env
 
-    hipchat "#{user} successfully deployed #{env[ 'branch' ]} to #{env[ 'remote' ]}",
-      :color => 'green', :auth_token => env[ 'deploy.hipchat.auth_token' ]
+    hipchat "#{env[ 'user.email' ]} successfully deployed #{env[ 'branch' ]} to #{env[ 'remote' ]}",
+      :color => 'green', :auth_token => env[ 'hipchat.authtoken' ]
 
   rescue Interrupt => e
-    hipchat "#{user} interrupted the deploy of #{env[ 'branch' ]} to #{env[ 'remote' ]}",
-      :color => 'red', :auth_token => env[ 'deploy.hipchat.auth_token' ]
+    hipchat "#{env[ 'user.email' ]} interrupted the deploy of #{env[ 'branch' ]} to #{env[ 'remote' ]}",
+      :color => 'red', :auth_token => env[ 'hipchat.authtoken' ]
 
     raise
-  end
-
-  def user
-    @user ||= `git config user.email`.chomp
   end
 
   def hipchat( message, options={} )
