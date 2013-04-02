@@ -37,4 +37,12 @@ EOS
 
     env.should include( 'git.remote' => 'production' )
   end
+  it 'adds the user email to env' do
+    subject.stub( :` ){ '' }
+    subject.stub( :` ).with( 'git config user.email' ){ `echo jeremy.ruppel@gmail.com` }
+
+    subject.call env
+
+    env.should include( 'user.email' => 'jeremy.ruppel@gmail.com' )
+  end
 end
