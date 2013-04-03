@@ -6,9 +6,9 @@ class Git::Deploy::GitConfig
 
   def call( env )
 
-    `git config --get-regexp deploy.*`.lines.each do |line|
-      key, value = line.chomp.split( /\s+/, 2 )
-      env[ key ] = value
+    `git config --list`.lines.each do |line|
+      key, value = line.chomp.split( /=/, 2 )
+      env[ "git.config.#{key}" ] = value
     end
 
     # TODO this is getting to be a common pattern, DRY it up
@@ -28,4 +28,5 @@ class Git::Deploy::GitConfig
 
     @app.call env
   end
+
 end
