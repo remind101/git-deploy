@@ -10,6 +10,8 @@ module Git
         @opts = opts
         super( { } ) do
           insert 0, Git::Deploy::GitConfig
+          insert 1, Git::Deploy::Sanity
+          insert 2, Git::Deploy::HerokuConfig
 
           instance_eval( config.read ) if config.exist?
         end
