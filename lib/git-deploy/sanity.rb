@@ -22,10 +22,10 @@ class Git::Deploy::Sanity
   end
 
   def branch_exists?( branch )
-    system `git show-ref --quiet --verify refs/heads/#{branch}`
+    system "git show-ref --quiet --verify refs/heads/#{branch}"
   end
 
   def remote_exists?( remote )
-    system `git-show-ref --quiet --verify refs/heads/#{remote}/master`
+    system "git-show-ref --quiet --verify refs/heads/#{remote}/master"
   end
 end
