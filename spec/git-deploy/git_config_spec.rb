@@ -12,6 +12,7 @@ deploy.master.remote=production
 deploy.foo=bar
 remote.production.url=git@heroku.com:app.git
 remote.production.merge=refs/heads/master
+user.email=jeremy.ruppel@gmail.com
 EOS
     }
 
@@ -22,7 +23,8 @@ EOS
       'git.config.deploy.master.remote'    => 'production',
       'git.config.deploy.foo'              => 'bar',
       'git.config.remote.production.url'   => 'git@heroku.com:app.git',
-      'git.config.remote.production.merge' => 'refs/heads/master'
+      'git.config.remote.production.merge' => 'refs/heads/master',
+      'git.config.user.email'              => 'jeremy.ruppel@gmail.com'
     )
   end
   it 'adds the current branch to env' do
@@ -40,13 +42,5 @@ EOS
     subject.call env
 
     env.should include( 'git.remote' => 'production' )
-  end
-  it 'adds the user email to env' do
-    subject.stub( :` ){ '' }
-    subject.stub( :` ).with( 'git config user.email' ){ `echo jeremy.ruppel@gmail.com` }
-
-    subject.call env
-
-    env.should include( 'user.email' => 'jeremy.ruppel@gmail.com' )
   end
 end

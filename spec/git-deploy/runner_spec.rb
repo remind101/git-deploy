@@ -5,7 +5,7 @@ class Git::Deploy::Runner
   public :stack
 end
 
-describe Git::Deploy::Runner, :focus => true do
+describe Git::Deploy::Runner do
 
   let( :opts ){ double 'Slop' }
 
