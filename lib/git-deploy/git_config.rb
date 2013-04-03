@@ -26,6 +26,8 @@ class Git::Deploy::GitConfig
     env[ 'user.email' ].chomp!
     env[ 'user.email' ] = nil unless $?.success?
 
+    env[ 'remote.heroku' ] = env[ 'remote' ].include?( 'heroku.com' )
+
     @app.call env
   end
 
