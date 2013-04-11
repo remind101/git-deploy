@@ -10,6 +10,7 @@ module Git
     autoload :GitConfig,         'git-deploy/git_config'
     autoload :GitPush,           'git-deploy/git_push'
     autoload :HerokuBranch,      'git-deploy/heroku_branch'
+    autoload :HerokuConfig,      'git-deploy/heroku_config'
     autoload :HerokuMaintenance, 'git-deploy/heroku_maintenance'
     autoload :HerokuWorkers,     'git-deploy/heroku_workers'
     autoload :Hipchat,           'git-deploy/hipchat'

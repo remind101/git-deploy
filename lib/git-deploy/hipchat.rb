@@ -18,16 +18,16 @@ class Git::Deploy::Hipchat
       EOS
     end
 
-    hipchat "#{env[ 'user.email' ]} is deploying #{env[ 'branch' ]} to #{env[ 'remote' ]}",
+    hipchat "#{env[ 'git.config.user.email' ]} is deploying #{env[ 'branch' ]} to #{env[ 'remote' ]}",
       :color => 'yellow', :auth_token => env[ 'git.config.hipchat.authtoken' ]
 
     @app.call env
 
-    hipchat "#{env[ 'user.email' ]} successfully deployed #{env[ 'branch' ]} to #{env[ 'remote' ]}",
+    hipchat "#{env[ 'git.config.user.email' ]} successfully deployed #{env[ 'branch' ]} to #{env[ 'remote' ]}",
       :color => 'green', :auth_token => env[ 'git.config.hipchat.authtoken' ]
 
   rescue Interrupt => e
-    hipchat "#{env[ 'user.email' ]} interrupted the deploy of #{env[ 'branch' ]} to #{env[ 'remote' ]}",
+    hipchat "#{env[ 'git.config.user.email' ]} interrupted the deploy of #{env[ 'branch' ]} to #{env[ 'remote' ]}",
       :color => 'red', :auth_token => env[ 'git.config.hipchat.authtoken' ]
 
     raise

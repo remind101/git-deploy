@@ -6,7 +6,7 @@ describe Git::Deploy::Hipchat, :middleware => true do
 
   it 'performs the correct steps in order' do
     env[ 'git.config.hipchat.authtoken' ] = 'foo'
-    env[ 'user.email' ] = 'jeremy.ruppel@gmail.com'
+    env[ 'git.config.user.email'        ] = 'jeremy.ruppel@gmail.com'
 
     subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com is deploying feature to production', :color => 'yellow', :auth_token => 'foo' ).ordered
         app.should_receive( :call ).with( env ).ordered.and_call_original
@@ -16,7 +16,7 @@ describe Git::Deploy::Hipchat, :middleware => true do
   end
   it 'handles an interrupt' do
     env[ 'git.config.hipchat.authtoken' ] = 'foo'
-    env[ 'user.email' ] = 'jeremy.ruppel@gmail.com'
+    env[ 'git.config.user.email'        ] = 'jeremy.ruppel@gmail.com'
 
     subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com is deploying feature to production', :color => 'yellow', :auth_token => 'foo' ).ordered
         app.should_receive( :call ).with( env ).ordered.and_raise( Interrupt )
@@ -25,7 +25,7 @@ describe Git::Deploy::Hipchat, :middleware => true do
     expect { subject.call( env ) }.to raise_error( Interrupt )
   end
   it 'raises an exception when the auth token is not set' do
-    env[ 'hipchat.authtoken' ] = nil
+    env[ 'git.config.hipchat.authtoken' ] = nil
 
     subject.should_not_receive( :hipchat )
         app.should_not_receive( :call )
