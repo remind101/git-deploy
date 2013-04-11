@@ -11,23 +11,24 @@ class Git::Deploy::GitConfig
       env[ "git.config.#{key}" ] = value
     end
 
-    # TODO this is getting to be a common pattern, DRY it up
-    env[ 'git.branch' ] = `git symbolic-ref --short HEAD`
-    env[ 'git.branch' ].chomp!
-    env[ 'git.branch' ] = nil unless $?.success?
-
-    env[ 'git.remote' ] = `git rev-parse --abbrev-ref --verify --quiet @{u}`
-    env[ 'git.remote' ].chomp!
-    env[ 'git.remote' ] = nil unless $?.success?
+    set( env, 'git.branch', 'git symbolic-ref --short HEAD' )
+    set( env, 'git.remote', 'git rev-parse --abbrev-ref --verify --quiet @{u}' )
 
     # TODO can get this for free if we include all of the config keys,
     # not just the ones under deploy.* above
-    env[ 'user.email' ] = `git config user.email`
-    env[ 'user.email' ].chomp!
-    env[ 'user.email' ] = nil unless $?.success?
+    set( env, 'user.email', 'git config user.email' )
 
     env[ 'remote.heroku' ] = env[ "git.config.remote.%s.url" % env[ 'remote' ] ].to_s.include?( 'heroku.com' )
+
     @app.call env
+  end
+
+private
+
+  def set( env, setting, command )
+    env[ setting ] = `#{command}`
+    env[ setting ].chomp!
+    env[ setting ] = nil unless $?.success?
   end
 
 end
