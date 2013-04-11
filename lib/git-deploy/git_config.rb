@@ -11,16 +11,18 @@ class Git::Deploy::GitConfig
       env[ "git.config.#{key}" ] = value
     end
 
-    # TODO this is getting to be a common pattern, DRY it up
-    env[ 'git.branch' ] = `git symbolic-ref --short HEAD`
-    env[ 'git.branch' ].chomp!
-    env[ 'git.branch' ] = nil unless $?.success?
-
-    env[ 'git.remote' ] = `git rev-parse --abbrev-ref --verify --quiet @{u}`
-    env[ 'git.remote' ].chomp!
-    env[ 'git.remote' ] = nil unless $?.success?
+    set( env, 'git.branch', 'git symbolic-ref --short HEAD' )
+    set( env, 'git.remote', 'git rev-parse --abbrev-ref --verify --quiet @{u}' )
 
     @app.call env
+  end
+
+private
+
+  def set( env, setting, command )
+    env[ setting ] = `#{command}`
+    env[ setting ].chomp!
+    env[ setting ] = nil unless $?.success?
   end
 
 end
