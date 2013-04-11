@@ -5,7 +5,7 @@ describe Git::Deploy::Hipchat, :middleware => true do
   subject { described_class.new app, { } }
 
   it 'performs the correct steps in order' do
-    env[ 'hipchat.authtoken' ] = 'foo'
+    env[ 'git.config.hipchat.authtoken' ] = 'foo'
     env[ 'user.email' ] = 'jeremy.ruppel@gmail.com'
 
     subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com is deploying feature to production', :color => 'yellow', :auth_token => 'foo' ).ordered
@@ -15,7 +15,7 @@ describe Git::Deploy::Hipchat, :middleware => true do
     subject.call env
   end
   it 'handles an interrupt' do
-    env[ 'hipchat.authtoken' ] = 'foo'
+    env[ 'git.config.hipchat.authtoken' ] = 'foo'
     env[ 'user.email' ] = 'jeremy.ruppel@gmail.com'
 
     subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com is deploying feature to production', :color => 'yellow', :auth_token => 'foo' ).ordered
