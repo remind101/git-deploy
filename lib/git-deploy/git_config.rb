@@ -14,12 +14,6 @@ class Git::Deploy::GitConfig
     set( env, 'git.branch', 'git symbolic-ref --short HEAD' )
     set( env, 'git.remote', 'git rev-parse --abbrev-ref --verify --quiet @{u}' )
 
-    # TODO can get this for free if we include all of the config keys,
-    # not just the ones under deploy.* above
-    set( env, 'user.email', 'git config user.email' )
-
-    env[ 'remote.heroku' ] = env[ "git.config.remote.%s.url" % env[ 'remote' ] ].to_s.include?( 'heroku.com' )
-
     @app.call env
   end
 

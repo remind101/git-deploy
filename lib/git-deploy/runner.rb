@@ -8,7 +8,13 @@ module Git
       # Sets up the middleware stack for deploy runs.
       def initialize( opts )
         @opts = opts
-        super( { } ){ instance_eval( config.read ) if config.exist? }
+        super( { } ) do
+          insert 0, Git::Deploy::GitConfig
+          insert 1, Git::Deploy::Sanity
+          insert 2, Git::Deploy::HerokuConfig
+
+          instance_eval( config.read ) if config.exist?
+        end
       end
 
       ##
@@ -36,7 +42,6 @@ module Git
         exit 1
       rescue ArgumentError => e
         puts e.message
-        puts args.first # prints the usage instructions
         exit 1
       end
 
