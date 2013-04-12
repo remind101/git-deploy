@@ -14,7 +14,8 @@ describe Git::Deploy::Runner do
   it 'has the correct default middleware stack' do
     subject.stack.should == [
       [ Git::Deploy::GitConfig,    [ ], nil ],
-      [ Git::Deploy::Sanity,       [ ], nil ],
+      [ Git::Deploy::GitBranch,    [ ], nil ],
+      [ Git::Deploy::GitRemote,    [ ], nil ],
       [ Git::Deploy::HerokuConfig, [ ], nil ]
     ]
   end
