@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Git::Deploy::Shell, :focus => true do
+describe Git::Deploy::Shell do
 
   subject { Class.new do
     include Git::Deploy::Shell
@@ -19,7 +19,7 @@ describe Git::Deploy::Shell, :focus => true do
         .to yield_successive_args(
           "require 'spec_helper'",
           "",
-          "describe Git::Deploy::Shell, :focus => true do"
+          "describe Git::Deploy::Shell do"
          )
     end
     it 'returns nil if the command has no output' do
@@ -46,7 +46,7 @@ describe Git::Deploy::Shell, :focus => true do
         .to yield_successive_args(
           "require 'spec_helper'",
           "",
-          "describe Git::Deploy::Shell, :focus => true do"
+          "describe Git::Deploy::Shell do"
          )
     end
   end

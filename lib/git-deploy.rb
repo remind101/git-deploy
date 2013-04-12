@@ -11,6 +11,7 @@ module Git
     autoload :GitBranch,         'git-deploy/git_branch'
     autoload :GitConfig,         'git-deploy/git_config'
     autoload :GitPush,           'git-deploy/git_push'
+    autoload :GitTag,            'git-deploy/git_tag'
     autoload :GitRemote,         'git-deploy/git_remote'
     autoload :HerokuBranch,      'git-deploy/heroku_branch'
     autoload :HerokuConfig,      'git-deploy/heroku_config'
