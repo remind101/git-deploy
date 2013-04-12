@@ -4,6 +4,7 @@ module Git
   module Deploy
     autoload :Builder,           'git-deploy/builder'
     autoload :Runner,            'git-deploy/runner'
+    autoload :Shell,             'git-deploy/shell'
 
     autoload :Confirm,           'git-deploy/confirm'
     autoload :Countdown,         'git-deploy/countdown'
