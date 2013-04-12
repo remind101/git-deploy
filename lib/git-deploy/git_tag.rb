@@ -7,6 +7,11 @@ class Git::Deploy::GitTag
 
   def initialize( app, options )
     @app, @options = app, options
+
+    # "2013-04-12.1132AM"
+    @options[ :tagname ] ||= '%F.%I%M%p'
+    # "Release: Friday, April 12, 2013 11:35:12 AM PDT"
+    @options[ :message ] ||= 'Release: %A, %B %d, %Y %r %Z'
   end
 
   def call( env )
