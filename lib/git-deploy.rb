@@ -4,12 +4,14 @@ module Git
   module Deploy
     autoload :Builder,           'git-deploy/builder'
     autoload :Runner,            'git-deploy/runner'
+    autoload :Shell,             'git-deploy/shell'
 
     autoload :Confirm,           'git-deploy/confirm'
     autoload :Countdown,         'git-deploy/countdown'
     autoload :GitBranch,         'git-deploy/git_branch'
     autoload :GitConfig,         'git-deploy/git_config'
     autoload :GitPush,           'git-deploy/git_push'
+    autoload :GitTag,            'git-deploy/git_tag'
     autoload :GitRemote,         'git-deploy/git_remote'
     autoload :HerokuBranch,      'git-deploy/heroku_branch'
     autoload :HerokuConfig,      'git-deploy/heroku_config'
@@ -33,6 +35,11 @@ module Git
       system 'git config deploy.$(basename $(git symbolic-ref HEAD)).remote'
     end
     module_function :on_deployable_branch?
+
+    class << self
+      attr_accessor :verbose
+      @verbose = true
+    end
   end
 end
 

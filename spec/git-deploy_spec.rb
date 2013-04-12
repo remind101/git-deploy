@@ -26,4 +26,10 @@ describe Git::Deploy do
       subject.on_deployable_branch?.should == true
     end
   end
+
+  describe '.verbose' do
+    it 'is an accessor' do
+      subject.should respond_to( :verbose, :verbose= )
+    end
+  end
 end
