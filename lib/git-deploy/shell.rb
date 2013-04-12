@@ -7,7 +7,7 @@ module Git
       ##
       #
       def sh( command )
-        # puts command # TODO class this up a bit
+        puts command if Git::Deploy.verbose # TODO class this up a bit
 
         out, status = Open3.capture2e command
 

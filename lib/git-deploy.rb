@@ -35,6 +35,11 @@ module Git
       system 'git config deploy.$(basename $(git symbolic-ref HEAD)).remote'
     end
     module_function :on_deployable_branch?
+
+    class << self
+      attr_accessor :verbose
+      @verbose = true
+    end
   end
 end
 
