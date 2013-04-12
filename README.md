@@ -18,7 +18,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+First, set up your remote tracking branches to heroku:
+
+If we have two heroku remotes, `staging` and `production`, and we want our
+branches `develop` and `master` to track to those respectively:
+
+``` sh
+git branch -u staging/master develop
+git branch -u production/master master
+```
 
 ## Contributing
 
