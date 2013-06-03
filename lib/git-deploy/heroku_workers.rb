@@ -8,7 +8,8 @@ class Git::Deploy::HerokuWorkers
 
     if env[ 'remote.heroku' ]
       # TODO catch exit status
-      @workers = `heroku ps --remote #{env[ 'remote' ]} | grep -c worker`.to_i
+      @workers = `heroku ps --remote #{env[ 'remote' ]} | grep -c ^worker`.to_i
+      @workers = nil if @workers.zero?
     end
 
     if env[ 'remote.heroku' ] && @workers
