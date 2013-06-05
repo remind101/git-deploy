@@ -20,4 +20,12 @@ describe Git::Deploy::HerokuConfig, :middleware => true do
 
     env[ 'remote.heroku' ].should == false
   end
+  it 'sets remote.heroku.app to the app slug if the remote url looks like heroku' do
+    env[ 'remote' ] = 'production'
+    env[ 'git.config.remote.production.url' ] = 'git@heroku.com:app.git'
+
+    subject.call env
+
+    env[ 'remote.app' ].should == 'app'
+  end
 end
