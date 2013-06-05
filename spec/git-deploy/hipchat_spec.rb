@@ -8,9 +8,21 @@ describe Git::Deploy::Hipchat, :middleware => true do
     env[ 'git.config.hipchat.authtoken' ] = 'foo'
     env[ 'git.config.user.email'        ] = 'jeremy.ruppel@gmail.com'
 
-    subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com is deploying feature to production', :color => 'yellow', :auth_token => 'foo' ).ordered
+    subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com is deploying feature to production', :color => 'yellow').ordered
         app.should_receive( :call ).with( env ).ordered.and_call_original
-    subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com successfully deployed feature to production', :color => 'green', :auth_token => 'foo' ).ordered
+    subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com successfully deployed feature to production', :color => 'green').ordered
+
+    subject.call env
+  end
+  it 'ouputs the name of the heroku app, when the user is deploying to heroku' do
+    env[ 'git.config.hipchat.authtoken' ] = 'foo'
+    env[ 'git.config.user.email'        ] = 'jeremy.ruppel@gmail.com'
+    env[ 'remote.heroku'                ] = true
+    env[ 'remote.app'                   ] = 'app'
+
+    subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com is deploying app#feature to production', :color => 'yellow').ordered
+        app.should_receive( :call ).with( env ).ordered.and_call_original
+    subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com successfully deployed app#feature to production', :color => 'green').ordered
 
     subject.call env
   end
@@ -18,9 +30,9 @@ describe Git::Deploy::Hipchat, :middleware => true do
     env[ 'git.config.hipchat.authtoken' ] = 'foo'
     env[ 'git.config.user.email'        ] = 'jeremy.ruppel@gmail.com'
 
-    subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com is deploying feature to production', :color => 'yellow', :auth_token => 'foo' ).ordered
+    subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com is deploying feature to production', :color => 'yellow').ordered
         app.should_receive( :call ).with( env ).ordered.and_raise( Interrupt )
-    subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com interrupted the deploy of feature to production', :color => 'red', :auth_token => 'foo' ).ordered
+    subject.should_receive( :hipchat ).with( 'jeremy.ruppel@gmail.com interrupted the deploy of feature to production', :color => 'red').ordered
 
     expect { subject.call( env ) }.to raise_error( Interrupt )
   end
