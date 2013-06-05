@@ -7,7 +7,7 @@ describe Git::Deploy::HerokuWorkers, :middleware => true do
   it 'scales the workers when the remote is heroku' do
     env[ 'remote.heroku' ] = true
 
-    subject.should_receive( :` ).with( 'heroku ps --remote production | grep -c worker' ).ordered { "2\n" }
+    subject.should_receive( :` ).with( 'heroku ps --remote production | grep -c ^worker' ).ordered { "2\n" }
     subject.should_receive( :` ).with( 'heroku ps:scale worker=0 --remote production' ).ordered
         app.should_receive( :call ).with( env )
     subject.should_receive( :` ).with( 'heroku ps:scale worker=2 --remote production' ).ordered
@@ -25,7 +25,7 @@ describe Git::Deploy::HerokuWorkers, :middleware => true do
   it 'scales the workers back up after an interrupt' do
     env[ 'remote.heroku' ] = true
 
-    subject.should_receive( :` ).with( 'heroku ps --remote production | grep -c worker' ).ordered { "2\n" }
+    subject.should_receive( :` ).with( 'heroku ps --remote production | grep -c ^worker' ).ordered { "2\n" }
     subject.should_receive( :` ).with( 'heroku ps:scale worker=0 --remote production' ).ordered
         app.should_receive( :call ).with( env ).and_raise( Interrupt )
     subject.should_receive( :` ).with( 'heroku ps:scale worker=2 --remote production' ).ordered
