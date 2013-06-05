@@ -33,7 +33,7 @@ class Git::Deploy::Hipchat
 
   def hipchat( message, options={} )
     options.merge! @config
-    options.merge! :message => message, :authtoken => authtoken
+    options.merge! :message => message, :auth_token => authtoken
 
     uri  = URI 'https://api.hipchat.com/v1/rooms/message'
 
